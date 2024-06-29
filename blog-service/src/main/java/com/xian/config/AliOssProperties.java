@@ -11,11 +11,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "alioss")
 @Data
 public class AliOssProperties {
- 
-//    private String endpoint = "oss-cn-hangzhou.aliyuncs.com";
-//    private String accessKeyId = "LTAI5tQ3atsyXyYHvPFE8iTp";
-//    private String accessKeySecret = "Fu3LpH2IjQYhQ5jFghcIIoPl8TRKry";
-//    private String bucketName = "xian-blog";
+
 
     private String endpoint ;
     private String accessKeyId;
