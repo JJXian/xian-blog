@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xian.mapper.CategoryMapper">
+
+    <sql id="Base_Column_List">
+        id,name
+    </sql>
+
+    <select id="selectAll" resultType="com.xian.entity.Category">
+        select
+        <include refid="Base_Column_List" />
+        from category
+        <where>
+            <if test="id != null"> and id = #{id}</if>
+            <if test="name != null"> and name like concat('%', #{name}, '%')</if>
+        </where>
+--         order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.xian.entity.Category">
+        select
+        <include refid="Base_Column_List" />
+        from category
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from category
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.xian.entity.Category" useGeneratedKeys="true" keyProperty="id">
+        insert into category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.xian.entity.Category">
+        update category
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

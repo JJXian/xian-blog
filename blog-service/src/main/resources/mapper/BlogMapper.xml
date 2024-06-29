@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xian.mapper.BlogMapper">
+
+    <sql id="Base_Column_List">
+        id,title,content,descr,cover,tags,user_id,date,read_count,category_id
+    </sql>
+
+    <select id="selectAll" resultType="com.xian.entity.Blog">
+        select
+        blog.*, category.name as categoryName, user.name as userName
+        from blog
+        left join category
+        on blog.category_id = category.id
+        left join user
+        on blog.user_id = user.id
+        <where>
+            <if test="title != null">and blog.title like concat('%', #{title}, '%')</if>
+            <if test="categoryName != null">and category.name like concat('%', #{categoryName}, '%')</if>
+            <if test="userName != null">and user.name like concat('%', #{userName}, '%')</if>
+            <if test="userId != null">and user.id = #{userId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.xian.entity.Blog">
+        select
+        blog.*, category.name as categoryName, user.name as userName
+        from blog
+        left join category
+        on blog.category_id = category.id
+        left join user
+        on blog.user_id = user.id
+        where blog.id = #{id}
+    </select>
+
+    <select id="selectLike" resultType="com.xian.entity.Blog">
+        select blog.*, user.name as userName
+        from likes
+        left join blog
+        on likes.fid = blog.id
+        left join category
+        on blog.category_id = category.id
+        left join user
+        on blog.user_id = user.id
+        <where>
+            and likes.module = '博客'
+            <if test="title != null">and blog.title like concat('%', #{title}, '%')</if>
+            <if test="categoryName != null">and category.name like concat('%', #{categoryName}, '%')</if>
+            <if test="userName != null">and user.name like concat('%', #{userName}, '%')</if>
+            <if test="userId != null">and likes.user_id = #{userId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectCollect" resultType="com.xian.entity.Blog">
+        select blog.*, user.name as userName
+        from collect
+        left join blog
+        on collect.fid = blog.id
+        left join category
+        on blog.category_id = category.id
+        left join user
+        on blog.user_id = user.id
+        <where>
+            and collect.module = '博客'
+            <if test="title != null">and blog.title like concat('%', #{title}, '%')</if>
+            <if test="categoryName != null">and category.name like concat('%', #{categoryName}, '%')</if>
+            <if test="userName != null">and user.name like concat('%', #{userName}, '%')</if>
+            <if test="userId != null">and collect.user_id = #{userId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectComment" resultType="com.xian.entity.Blog">
+        select blog.*, user.name as userName
+        from comment
+        left join blog
+        on comment.fid = blog.id
+        left join category
+        on blog.category_id = category.id
+        left join user
+        on blog.user_id = user.id
+        <where>
+            and comment.module = '博客'
+            <if test="title != null">and blog.title like concat('%', #{title}, '%')</if>
+            <if test="categoryName != null">and category.name like concat('%', #{categoryName}, '%')</if>
+            <if test="userName != null">and user.name like concat('%', #{userName}, '%')</if>
+            <if test="userId != null">and comment.user_id = #{userId}</if>
+        </where>
+        group by comment.fid , comment.module
+        order by id desc
+    </select>
+
+
+    <delete id="deleteById">
+        delete
+        from blog
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.xian.entity.Blog" useGeneratedKeys="true" keyProperty="id">
+        insert into blog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="descr != null">descr,</if>
+            <if test="cover != null">cover,</if>
+            <if test="tags != null">tags,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="date != null">date,</if>
+            <if test="readCount != null">read_count,</if>
+            <if test="categoryId != null">category_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="descr != null">#{descr},</if>
+            <if test="cover != null">#{cover},</if>
+            <if test="tags != null">#{tags},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="date != null">#{date},</if>
+            <if test="readCount != null">#{readCount},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.xian.entity.Blog">
+        update blog
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="descr != null">
+                descr = #{descr},
+            </if>
+            <if test="cover != null">
+                cover = #{cover},
+            </if>
+            <if test="tags != null">
+                tags = #{tags},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="date != null">
+                date = #{date},
+            </if>
+            <if test="readCount != null">
+                read_count = #{readCount},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

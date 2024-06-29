@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xian.mapper.LikesMapper">
+
+
+    <insert id="insert">
+        insert into likes (fid, user_id, module) values (#{fid}, #{userId}, #{module})
+    </insert>
+
+    <delete id="deleteById">
+        delete from likes where id = #{id}
+    </delete>
+
+    <select id="selectUserLikes" resultType="com.xian.entity.Likes">
+        select * from likes where fid = #{fid} and user_id = #{userId} and module = #{module}
+    </select>
+
+    <select id="selectByFidAndModule" resultType="java.lang.Integer">
+        select count(*) from likes where fid = #{fid} and module = #{module}
+    </select>
+
+</mapper>

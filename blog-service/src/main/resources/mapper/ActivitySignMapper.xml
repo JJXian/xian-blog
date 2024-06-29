@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xian.mapper.ActivitySignMapper">
+
+    <select id="selectAll" resultType="com.xian.entity.ActivitySign">
+        select
+        activity_sign.*, activity.name as activityName, user.name as userName
+        from activity_sign
+        left join activity on activity_sign.activity_id = activity.id
+        left join user on activity_sign.user_id = user.id
+        <where>
+            <if test="activityName != null and activityName != ''">
+                and activity.name like concat('%', #{activityName}, '%')
+            </if>
+            <if test="userName != null">
+                and user.name like concat('%', #{userName}, '%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>

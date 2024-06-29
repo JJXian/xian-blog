@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xian.mapper.CollectMapper">
+
+
+    <insert id="insert">
+        insert into collect (fid, user_id, module) values (#{fid}, #{userId}, #{module})
+    </insert>
+
+    <delete id="deleteById">
+        delete from collect where id = #{id}
+    </delete>
+
+    <select id="selectUserCollect" resultType="com.xian.entity.Collect">
+        select * from collect where fid = #{fid} and user_id = #{userId} and module = #{module}
+    </select>
+
+    <select id="selectByFidAndModule" resultType="java.lang.Integer">
+        select count(*) from collect where fid = #{fid} and module = #{module}
+    </select>
+
+</mapper>

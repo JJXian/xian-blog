@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xian.mapper.CommentMapper">
+
+    <sql id="Base_Column_List">
+        id,content,user_id,pid,root_id,time,blog_id,fid,module
+    </sql>
+
+    <select id="selectAll" resultType="com.xian.entity.Comment">
+        select
+        comment.*, user.name as userName,  user.avatar as avatar, u2.name as replyUser
+        from comment
+        left join user
+        on comment.user_id = user.id
+        left join comment c2
+        on comment.pid = c2.id
+        left join user u2
+        on c2.user_id = u2.id
+        <where>
+            <if test="userName != null"> and user.name like concat('%', #{userName}, '%')</if>
+            <if test="fid != null"> and comment.fid  = #{fid}</if>
+            <if test="module != null"> and comment.module = #{module}</if>
+            <if test="rootId != null"> and comment.root_id = #{rootId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectForUser" resultType="com.xian.entity.Comment">
+        select
+        comment.*, user.name as userName,  user.avatar as avatar
+        from comment
+        left join user
+        on comment.user_id = user.id
+        <where>
+            <if test="fid != null"> and comment.fid  = #{fid}</if>
+            <if test="module != null"> and comment.module = #{module}</if>
+            and pid is null
+        </where>
+        order by comment.id desc
+    </select>
+
+    <select id="selectById" resultType="com.xian.entity.Comment">
+        select
+        <include refid="Base_Column_List" />
+        from comment
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from comment
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.xian.entity.Comment" useGeneratedKeys="true" keyProperty="id">
+        insert into comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="content != null">content,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="pid != null">pid,</if>
+            <if test="rootId != null">root_id,</if>
+            <if test="time != null">time,</if>
+            <if test="fid != null">fid,</if>
+            <if test="module != null">module,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="content != null">#{content},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="pid != null">#{pid},</if>
+            <if test="rootId != null">#{rootId},</if>
+            <if test="time != null">#{time},</if>
+            <if test="fid != null">#{fid},</if>
+            <if test="module != null">#{module},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.xian.entity.Comment">
+        update comment
+        <set>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="pid != null">
+                pid = #{pid},
+            </if>
+            <if test="rootId != null">
+                root_id = #{rootId},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="fid != null">
+                fid = #{fid},
+            </if>
+            <if test="module != null">
+                module = #{module},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

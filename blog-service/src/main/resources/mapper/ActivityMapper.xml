@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xian.mapper.ActivityMapper">
+
+    <sql id="Base_Column_List">
+        id,name,descr,start,end,form,address,host,read_count,content,cover
+    </sql>
+
+    <select id="selectAll" resultType="com.xian.entity.Activity">
+        select
+        <include refid="Base_Column_List" />
+        from activity
+        <where>
+            <if test="id != null"> and id = #{id}</if>
+            <if test="name != null"> and name like concat('%', #{name}, '%')</if>
+            <if test="descr != null"> and descr like concat('%', #{descr}, '%')</if>
+            <if test="start != null"> and start like concat('%', #{start}, '%')</if>
+            <if test="end != null"> and end like concat('%', #{end}, '%')</if>
+            <if test="form != null"> and form like concat('%', #{form}, '%')</if>
+            <if test="address != null"> and address like concat('%', #{address}, '%')</if>
+            <if test="host != null"> and host like concat('%', #{host}, '%')</if>
+            <if test="readCount != null"> and read_count = #{readCount}</if>
+            <if test="cover != null"> and cover = #{cover}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.xian.entity.Activity">
+        select
+        <include refid="Base_Column_List" />
+        from activity
+        where id = #{id}
+    </select>
+
+    <select id="selectUser" resultType="com.xian.entity.Activity">
+        select
+        activity.*
+        from activity_sign
+        left join activity
+        on activity_sign.activity_id = activity.id
+        <where>
+            <if test="name != null"> and activity.name like concat('%', #{name}, '%')</if>
+            <if test="userId != null">  and activity_sign.user_id = #{userId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectLike" resultType="com.xian.entity.Activity">
+        select
+        activity.*
+        from likes
+        left join activity
+        on likes.fid = activity.id
+        <where>
+            and likes.module = '活动'
+            <if test="name != null"> and activity.name like concat('%', #{name}, '%')</if>
+            <if test="userId != null">  and likes.user_id = #{userId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectCollect" resultType="com.xian.entity.Activity">
+        select
+        activity.*
+        from collect
+        left join activity
+        on collect.fid = activity.id
+        <where>
+            and collect.module = '活动'
+            <if test="name != null"> and activity.name like concat('%', #{name}, '%')</if>
+            <if test="userId != null">  and collect.user_id = #{userId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectComment" resultType="com.xian.entity.Activity">
+        select
+        activity.*
+        from comment
+        left join activity
+        on comment.fid = activity.id
+        <where>
+            and comment.module = '活动'
+            <if test="name != null"> and activity.name like concat('%', #{name}, '%')</if>
+            <if test="userId != null">  and comment.user_id = #{userId}</if>
+        </where>
+        group by comment.fid , comment.module
+        order by id desc
+    </select>
+
+
+    <delete id="deleteById">
+        delete from activity
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.xian.entity.Activity" useGeneratedKeys="true" keyProperty="id">
+        insert into activity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="descr != null">descr,</if>
+            <if test="start != null">start,</if>
+            <if test="end != null">end,</if>
+            <if test="form != null">form,</if>
+            <if test="address != null">address,</if>
+            <if test="host != null">host,</if>
+            <if test="readCount != null">read_count,</if>
+            <if test="content != null">content,</if>
+            <if test="cover != null">cover,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="descr != null">#{descr},</if>
+            <if test="start != null">#{start},</if>
+            <if test="end != null">#{end},</if>
+            <if test="form != null">#{form},</if>
+            <if test="address != null">#{address},</if>
+            <if test="host != null">#{host},</if>
+            <if test="readCount != null">#{readCount},</if>
+            <if test="content != null">#{content},</if>
+            <if test="cover != null">#{cover},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.xian.entity.Activity">
+        update activity
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="descr != null">
+                descr = #{descr},
+            </if>
+            <if test="start != null">
+                start = #{start},
+            </if>
+            <if test="end != null">
+                end = #{end},
+            </if>
+            <if test="form != null">
+                form = #{form},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="host != null">
+                host = #{host},
+            </if>
+            <if test="readCount != null">
+                read_count = #{readCount},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="cover != null">
+                cover = #{cover},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

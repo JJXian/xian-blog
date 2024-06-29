@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xian.mapper.UserMapper">
+
+
+    <insert id="insert">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="username != null">username,</if>
+            <if test="password != null">password,</if>
+            <if test="name != null">name,</if>
+            <if test="phone != null">phone,</if>
+            <if test="email != null">email,</if>
+            <if test="avatar != null">avatar,</if>
+            <if test="role != null">role,</if>
+            <if test="sex != null">sex,</if>
+            <if test="info != null">info,</if>
+            <if test="birth != null">birth,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="username != null">#{username},</if>
+            <if test="password != null">#{password},</if>
+            <if test="name != null">#{name},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="email != null">#{email},</if>
+            <if test="avatar != null">#{avatar},</if>
+            <if test="role != null">#{role},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="info != null">#{info},</if>
+            <if test="birth != null">#{birth},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById">
+        update user
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="role != null">
+                role = #{role},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="info != null">
+                info = #{info},
+            </if>
+            <if test="birth != null">
+                birth = #{birth},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from user where id = #{id}
+    </delete>
+
+    <select id="selectByUsername" resultType="com.xian.entity.User">
+        select * from user where username = #{username}
+    </select>
+
+    <select id="selectById" resultType="com.xian.entity.User">
+        select * from user where id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="com.xian.entity.User">
+        select * from user
+        <where>
+            <if test="username != null"> and username = #{username}</if>
+            <if test="name != null"> and name like concat('%', #{name}, '%')</if>
+        </where>
+        order by id desc
+    </select>
+
+</mapper>
