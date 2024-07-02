@@ -1,7 +1,11 @@
 <template>
-  <div class="main-content" style="width: 50%">
+  <div class="main-content" style="width: 70%">
+    <div>
+      fdsfsdafa
+      dfafads
 
-    <el-tabs v-model="activeName" @tab-click="clickTab">
+    </div>
+    <el-tabs v-model="activeName" @tab-click="clickTab" tab-position="left" >
       <el-tab-pane label="个人资料" name="个人资料">
         <person-page @update:user="updateUser" />
       </el-tab-pane>

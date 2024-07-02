@@ -5,7 +5,7 @@
 
 .manager-header {
     display: flex;
-    /*background-color: #0066bc;*/
+    /*!*background-color: #0066bc;*!*/
     background-color: #444444;
 }
 
@@ -14,7 +14,8 @@
     height: 60px;
     padding-left: 10px;
     display: flex;
-    align-items: center
+    align-items: center;
+
 }
 
 .manager-header-left img {
@@ -27,7 +28,8 @@
     margin-left: 5px;
     font-size: 20px;
     font-weight: bold;
-    color: #eee
+    color: #eee;
+
 }
 
 .manager-header-center {
@@ -145,7 +147,7 @@
 }
 
 .el-menu-item:not(.is-active):hover {
-    /*background-color: #0376bf !important;*/
+    background-color: #0376bf !important;
     /*color: #fff;*/
 }
 

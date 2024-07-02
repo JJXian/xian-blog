@@ -14,7 +14,8 @@
         </el-breadcrumb>
       </div>
 
-      <div class="manager-header-right">
+<!--      顶部右侧用户头像和用户名-->
+      <div class="manager-header-right" style="margin-right: 10px">
         <el-dropdown placement="bottom">
           <div class="avatar">
             <img :src="user.avatar || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'" />
@@ -52,7 +53,7 @@
 
           <el-submenu index="user">
             <template slot="title">
-              <i class="el-icon-menu"></i><span>用户管理</span>
+              <i class="el-icon-user-solid"></i><span >用户管理</span>
             </template>
             <el-menu-item index="/admin">管理员信息</el-menu-item>
             <el-menu-item index="/user">用户信息</el-menu-item>
@@ -102,3 +103,5 @@ export default {
 <style scoped>
 @import "@/assets/css/manager.css";
 </style>
+
+

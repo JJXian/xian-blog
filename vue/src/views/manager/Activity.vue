@@ -2,8 +2,8 @@
   <div>
     <div class="search">
       <el-input placeholder="请输入活动名称查询" style="width: 200px" v-model="name"></el-input>
-      <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
-      <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
+      <el-button type="info" icon="el-icon-search" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
+      <el-button type="warning" icon="el-icon-refresh" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
 
     <div class="operation">
@@ -25,15 +25,16 @@
             </div>
           </template>
         </el-table-column>
+
         <el-table-column prop="start" label="开始时间"></el-table-column>
         <el-table-column prop="end" label="结束时间"></el-table-column>
         <el-table-column prop="form" label="活动形式"></el-table-column>
         <el-table-column prop="address" label="活动地址" show-overflow-tooltip></el-table-column>
         <el-table-column prop="host" label="主办方"></el-table-column>
-        <el-table-column prop="readCount" label="浏览量"></el-table-column>
+<!--        <el-table-column prop="readCount" label="浏览量"></el-table-column>-->
         <el-table-column label="查看活动详情" width="140">
           <template v-slot="scope">
-            <el-button @click="preview(scope.row.content)">查看活动详情</el-button>
+            <el-button @click="preview(scope.row.content)"><svg-icon icon-class="phone" />查看活动详情</el-button>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="180">

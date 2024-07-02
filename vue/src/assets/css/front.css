@@ -1,48 +1,64 @@
+/*主体背景颜色*/
 body {
-    background-color: #e4e6eb;
+    /*background-color: #e4e6eb;*/
+    background-color: #f0f0f0;
+
 }
 
+/*前端公告背景*/
 .front-notice {
     padding: 5px 20px;
     color: #666;
     font-size: 12px;
     background-color: #fff;
+
 }
+
+/*前端顶部左右*/
 .front-header {
     display: flex;
     height: 60px;
     line-height: 60px;
     border-bottom: 1px solid #eee;
     /*background: #0066bc;*/
-    background: #444444;
+    /*background: #444444;*/
+    background-color: #f0f0f0;
 }
+/*顶部左侧背景*/
 .front-header-left {
     width: 300px;
     display: flex;
     align-items: center;
     padding-left: 30px;
+
 }
 .front-header-left img, .front-header-dropdown img {
     width: 40px;
     height: 40px;
     border-radius: 50%
 }
+/*前端顶部标题*/
 .front-header-left .title {
     flex: 1;
-    color: #fff;
+    color: #000000;
     cursor: pointer;
     margin-left: 10px;
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 16px;
+    /*font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;*/
+    font-family: SimSong;
+    /*font-weight: bold;*/
 }
+
 .front-header-center {
     flex: 1;
+    background-color: #ff4d51;
 }
 .front-header-right {
     width: 200px;
     padding-right: 20px;
     text-align: right;
 }
+
 .front-header-dropdown {
     display: flex;
     align-items: center;
@@ -62,21 +78,41 @@ body {
 .el-menu.el-menu--horizontal {
     border: none !important;
     height: 59px;
+    background-color: #f0f0f0;
 }
 .el-menu {
     /*background-color: #0066bc;*/
     background-color: #444444;
 }
 .el-menu-item.is-active {
-    color: #fff !important;
-    /*background-color: #1890ff !important;*/
-    background-color: #303133 !important;
+    background-color: #f0f0f0 !important;
+    color: #1482f0 !important; /* 设置字体颜色为蓝色 */
+    font-weight: bold !important; /* 设置字体加粗 */
     height: 59px !important;
 }
 .el-menu-item {
-    color: #fff !important;
+    color: #000000 !important;
     border: none !important;
+    font-family: SimSong;
 }
+/*.el-menu-item:not(.is-active):hover {*/
+/*    !*background-color:   rgba(30, 128, 255, 0.2) !important;*!*/
+/*    background-color: rgba(30, 128, 255, 0.2) !important;*/
+/*    text-decoration: underline; !* 添加下划线 *!*/
+/*}*/
 .el-menu-item:not(.is-active):hover {
-    background-color: #59aeff !important;
+    position: relative; /* 设置相对定位 */
+    background-color: rgba(30, 128, 255, 0.2) !important;
+}
+
+.el-menu-item:hover::after {
+    content: ''; /* 设置伪元素内容为空 */
+    display: block; /* 将伪元素设为块级元素 */
+    position: absolute; /* 设置绝对定位 */
+    bottom: 1mm; /* 距离文字底部5mm的位置 */
+    left: 0; /* 从左侧开始 */
+    width: 100%; /* 宽度占满父元素 */
+    height: 2px; /* 线条高度 */
+    background-color: #1482f0; /* 线条颜色 */
+    content: ''; /* 清除默认内容 */
 }

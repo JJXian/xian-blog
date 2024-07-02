@@ -131,12 +131,26 @@ export default {
   font-size: 16px;
   cursor: pointer;
 }
-.category-item-active {
-  //background-color: #1890ff;
-  background-color: #303133;
-  color: #fff;
-  border-radius: 5px;
+.category-item:hover {
+  color: #1482f0; /* 设置文本颜色为蓝色 */
+  background-color: rgba(211, 211, 211, 0.2); /* 鼠标悬停时的背景色，调整透明度为 0.4 */
+  border-radius: 5px; /* 设置圆角 */
 }
+
+.category-item-active {
+  background-color: rgba(30, 128, 255, 0.2); /* 使用 RGBA 表示颜色，透明度为 0.9 */
+  color: #1482f0; /* 设置文本颜色为蓝色 */
+  font-weight: bold; /* 设置文本加粗 */
+  border-radius: 5px; /* 设置圆角 */
+}
+.category-item-active:hover {
+  /* 激活时取消鼠标悬停样式 */
+  background-color: rgba(30, 128, 255, 0.2); /* 保持激活时的背景色 */
+  color: #1482f0; /* 保持激活时的文本颜色 */
+}
+
+
+
 
 
 </style>

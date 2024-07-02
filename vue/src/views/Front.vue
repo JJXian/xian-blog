@@ -5,7 +5,7 @@
     <div class="front-header">
       <div class="front-header-left">
         <img src="@/assets/imgs/logo.png" alt="">
-        <div class="title">博客论坛平台</div>
+        <div class="title" >博客论坛平台</div>
       </div>
       <div class="front-header-center">
         <div class="front-header-nav">
@@ -18,7 +18,7 @@
       </div>
       <div>
         <el-input style="width: 260px; margin-right: 10px" placeholder="请输入博客关键字" v-model="title" clearable></el-input>
-        <el-button type="success" @click="goSearch">搜 索</el-button>
+        <el-button icon="el-icon-search"  @click="goSearch" class="custom-button">搜 索</el-button>
       </div>
       <div class="front-header-right">
         <div v-if="!user.username">
@@ -29,22 +29,23 @@
           <el-dropdown>
             <div class="front-header-dropdown">
               <img :src="user.avatar" alt="">
-              <div style="margin-left: 10px; color: #fff">
+              <div style="margin-left: 10px; color: #000000">
                 <span>{{ user.name }}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
               </div>
             </div>
-            <el-dropdown-menu slot="dropdown">
+            <el-dropdown-menu slot="dropdown" >
               <el-dropdown-item>
-                <div style="text-decoration: none" @click="goToPerson">个人中心</div>
+                <div style="text-decoration: none; height: 40px;display: flex; justify-content: center; align-items: center;" @click="goToPerson">个人中心</div>
               </el-dropdown-item>
               <el-dropdown-item>
-                <div style="text-decoration: none" @click="logout">退出</div>
+                <div style="text-decoration: none; height: 40px;display: flex; justify-content: center; align-items: center;" @click="logout">退出</div>
               </el-dropdown-item>
 
             </el-dropdown-menu>
           </el-dropdown>
         </div>
       </div>
+
     </div>
     <!--主体-->
     <div class="main-body">
@@ -112,4 +113,20 @@ export default {
 
 <style scoped>
   @import "@/assets/css/front.css";
+  .custom-input .el-input__inner:hover {
+    border-color: #409eff; /* 蓝色边框 */
+  }
+
+  .custom-input .el-input__inner {
+    background-color: #e6f7ff; /* 浅蓝色背景 */
+    border-color: #d3dce6; /* 默认边框颜色 */
+  }
+
+  .custom-button .el-button--success {
+    background-color: #67c23a; /* 按钮背景色 */
+    border-color: #67c23a; /* 按钮边框颜色 */
+    color: #fff; /* 按钮文字颜色 */
+  }
+
+
 </style>

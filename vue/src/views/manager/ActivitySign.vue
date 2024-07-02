@@ -3,8 +3,8 @@
     <div class="search">
       <el-input placeholder="请输入活动名称查询" style="width: 200px; margin-right:10px" v-model="activityName"></el-input>
       <el-input placeholder="请输入报名人姓名查询" style="width: 200px" v-model="userName"></el-input>
-      <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
-      <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
+      <el-button type="info" icon="el-icon-search" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
+      <el-button type="warning" icon="el-icon-refresh" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
 
     <div class="operation">
