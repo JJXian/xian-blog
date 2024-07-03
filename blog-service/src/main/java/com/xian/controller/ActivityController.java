@@ -1,7 +1,7 @@
 package com.xian.controller;
 
+import com.xian.activity.pojo.Activity;
 import com.xian.common.Result;
-import com.xian.entity.Activity;
 import com.xian.service.ActivityService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;

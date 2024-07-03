@@ -1,4 +1,4 @@
-package com.xian.entity;
+package com.xian.role.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

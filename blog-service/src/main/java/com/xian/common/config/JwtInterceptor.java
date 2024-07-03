@@ -6,7 +6,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.xian.common.Constants;
-import com.xian.entity.Account;
+import com.xian.role.pojo.Account;
 import com.xian.enums.ResultCodeEnum;
 import com.xian.enums.RoleEnum;
 import com.xian.exception.CustomException;

@@ -1,4 +1,6 @@
-package com.xian.entity;
+package com.xian.blog.pojo;
+
+import com.xian.role.pojo.User;
 
 import java.util.Objects;
 

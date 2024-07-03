@@ -1,4 +1,4 @@
-package com.xian.entity;
+package com.xian.behavior.pojo;
 
 import java.util.List;
 

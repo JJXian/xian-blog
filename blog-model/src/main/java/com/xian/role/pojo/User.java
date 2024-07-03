@@ -1,7 +1,8 @@
-package com.xian.entity;
+package com.xian.role.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.xian.role.pojo.Account;
 
 public class User extends Account {
 

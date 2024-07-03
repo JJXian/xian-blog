@@ -5,7 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.xian.common.Constants;
-import com.xian.entity.Account;
+import com.xian.role.pojo.Account;
 import com.xian.enums.RoleEnum;
 import com.xian.service.AdminService;
 import com.xian.service.UserService;

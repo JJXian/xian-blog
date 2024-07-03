@@ -2,8 +2,8 @@ package com.xian.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xian.common.Result;
-import com.xian.entity.Account;
-import com.xian.entity.User;
+import com.xian.role.pojo.Account;
+import com.xian.role.pojo.User;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.xian.entity;
+package com.xian.activity.pojo;
 
 public class ActivitySign {
 

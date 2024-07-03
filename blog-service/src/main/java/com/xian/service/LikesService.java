@@ -1,7 +1,7 @@
 package com.xian.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xian.entity.Likes;
+import com.xian.behavior.pojo.Likes;
 
 public interface LikesService extends IService<Likes> {
     void set(Likes likes);

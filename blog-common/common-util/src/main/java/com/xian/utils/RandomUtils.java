@@ -1,4 +1,4 @@
-package com.xian.util;
+package com.xian.utils;
 
 import java.util.Random;
 import java.util.UUID;

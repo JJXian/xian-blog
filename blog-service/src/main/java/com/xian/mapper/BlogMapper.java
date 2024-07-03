@@ -1,7 +1,7 @@
 package com.xian.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xian.entity.Blog;
+import com.xian.blog.pojo.Blog;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;

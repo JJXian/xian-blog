@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xian.mapper.ActivitySignMapper">
 
-    <select id="selectAll" resultType="com.xian.entity.ActivitySign">
+    <select id="selectAll" resultType="com.xian.activity.pojo.ActivitySign">
         select
         activity_sign.*, activity.name as activityName, user.name as userName
         from activity_sign

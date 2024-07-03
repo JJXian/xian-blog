@@ -8,7 +8,7 @@
         id,title,content,time,user
     </sql>
 
-    <select id="selectAll" resultType="com.xian.entity.Notice">
+    <select id="selectAll" resultType="com.xian.sys.pojo.Notice">
         select
         <include refid="Base_Column_List" />
         from notice
@@ -22,7 +22,7 @@
         order by id desc
     </select>
 
-    <select id="selectById" resultType="com.xian.entity.Notice">
+    <select id="selectById" resultType="com.xian.sys.pojo.Notice">
         select
         <include refid="Base_Column_List" />
         from notice
@@ -34,7 +34,7 @@
         where  id = #{id}
     </delete>
 
-    <insert id="insert" parameterType="com.xian.entity.Notice" useGeneratedKeys="true">
+    <insert id="insert" parameterType="com.xian.sys.pojo.Notice" useGeneratedKeys="true">
         insert into notice
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
@@ -52,7 +52,7 @@
         </trim>
     </insert>
 
-    <update id="updateById" parameterType="com.xian.entity.Notice">
+    <update id="updateById" parameterType="com.xian.sys.pojo.Notice">
         update notice
         <set>
             <if test="title != null">

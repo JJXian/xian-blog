@@ -3,13 +3,11 @@ package com.xian.controller;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.xian.common.Result;
-import com.xian.entity.Account;
+import com.xian.role.pojo.Account;
 import com.xian.enums.ResultCodeEnum;
 import com.xian.enums.RoleEnum;
 import com.xian.service.AdminService;
 import com.xian.service.UserService;
-import com.xian.service.impl.AdminServiceImpl;
-import com.xian.service.impl.UserServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

@@ -1,4 +1,4 @@
-package com.xian.entity;
+package com.xian.sys.pojo;
 
 import java.io.Serializable;
 

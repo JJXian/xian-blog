@@ -8,7 +8,7 @@
         id,name,descr,start,end,form,address,host,read_count,content,cover
     </sql>
 
-    <select id="selectAll" resultType="com.xian.entity.Activity">
+    <select id="selectAll" resultType="com.xian.activity.pojo.Activity">
         select
         <include refid="Base_Column_List" />
         from activity
@@ -27,14 +27,14 @@
         order by id desc
     </select>
 
-    <select id="selectById" resultType="com.xian.entity.Activity">
+    <select id="selectById" resultType="com.xian.activity.pojo.Activity">
         select
         <include refid="Base_Column_List" />
         from activity
         where id = #{id}
     </select>
 
-    <select id="selectUser" resultType="com.xian.entity.Activity">
+    <select id="selectUser" resultType="com.xian.activity.pojo.Activity">
         select
         activity.*
         from activity_sign
@@ -47,7 +47,7 @@
         order by id desc
     </select>
 
-    <select id="selectLike" resultType="com.xian.entity.Activity">
+    <select id="selectLike" resultType="com.xian.activity.pojo.Activity">
         select
         activity.*
         from likes
@@ -61,7 +61,7 @@
         order by id desc
     </select>
 
-    <select id="selectCollect" resultType="com.xian.entity.Activity">
+    <select id="selectCollect" resultType="com.xian.activity.pojo.Activity">
         select
         activity.*
         from collect
@@ -75,7 +75,7 @@
         order by id desc
     </select>
 
-    <select id="selectComment" resultType="com.xian.entity.Activity">
+    <select id="selectComment" resultType="com.xian.activity.pojo.Activity">
         select
         activity.*
         from comment
@@ -96,7 +96,7 @@
         where  id = #{id}
     </delete>
 
-    <insert id="insert" parameterType="com.xian.entity.Activity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.xian.activity.pojo.Activity" useGeneratedKeys="true" keyProperty="id">
         insert into activity
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -126,7 +126,7 @@
         </trim>
     </insert>
 
-    <update id="updateById" parameterType="com.xian.entity.Activity">
+    <update id="updateById" parameterType="com.xian.activity.pojo.Activity">
         update activity
         <set>
             <if test="name != null">

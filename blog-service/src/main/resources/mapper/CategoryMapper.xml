@@ -8,7 +8,7 @@
         id,name
     </sql>
 
-    <select id="selectAll" resultType="com.xian.entity.Category">
+    <select id="selectAll" resultType="com.xian.blog.pojo.Category">
         select
         <include refid="Base_Column_List" />
         from category
@@ -19,7 +19,7 @@
 --         order by id desc
     </select>
 
-    <select id="selectById" resultType="com.xian.entity.Category">
+    <select id="selectById" resultType="com.xian.blog.pojo.Category">
         select
         <include refid="Base_Column_List" />
         from category
@@ -31,7 +31,7 @@
         where  id = #{id}
     </delete>
 
-    <insert id="insert" parameterType="com.xian.entity.Category" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.xian.blog.pojo.Category" useGeneratedKeys="true" keyProperty="id">
         insert into category
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -43,7 +43,7 @@
         </trim>
     </insert>
 
-    <update id="updateById" parameterType="com.xian.entity.Category">
+    <update id="updateById" parameterType="com.xian.blog.pojo.Category">
         update category
         <set>
             <if test="name != null">

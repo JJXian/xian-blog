@@ -1,7 +1,7 @@
 package com.xian.controller;
 
 import com.xian.common.Result;
-import com.xian.entity.Comment;
+import com.xian.behavior.pojo.Comment;
 import com.xian.service.CommentService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;

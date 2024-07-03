@@ -8,7 +8,7 @@
         id,title,content,descr,cover,tags,user_id,date,read_count,category_id
     </sql>
 
-    <select id="selectAll" resultType="com.xian.entity.Blog">
+    <select id="selectAll" resultType="com.xian.blog.pojo.Blog">
         select
         blog.*, category.name as categoryName, user.name as userName
         from blog
@@ -25,7 +25,7 @@
         order by id desc
     </select>
 
-    <select id="selectById" resultType="com.xian.entity.Blog">
+    <select id="selectById" resultType="com.xian.blog.pojo.Blog">
         select
         blog.*, category.name as categoryName, user.name as userName
         from blog
@@ -36,7 +36,7 @@
         where blog.id = #{id}
     </select>
 
-    <select id="selectLike" resultType="com.xian.entity.Blog">
+    <select id="selectLike" resultType="com.xian.blog.pojo.Blog">
         select blog.*, user.name as userName
         from likes
         left join blog
@@ -55,7 +55,7 @@
         order by id desc
     </select>
 
-    <select id="selectCollect" resultType="com.xian.entity.Blog">
+    <select id="selectCollect" resultType="com.xian.blog.pojo.Blog">
         select blog.*, user.name as userName
         from collect
         left join blog
@@ -74,7 +74,7 @@
         order by id desc
     </select>
 
-    <select id="selectComment" resultType="com.xian.entity.Blog">
+    <select id="selectComment" resultType="com.xian.blog.pojo.Blog">
         select blog.*, user.name as userName
         from comment
         left join blog
@@ -101,7 +101,7 @@
         where id = #{id}
     </delete>
 
-    <insert id="insert" parameterType="com.xian.entity.Blog" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.xian.blog.pojo.Blog" useGeneratedKeys="true" keyProperty="id">
         insert into blog
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -129,7 +129,7 @@
         </trim>
     </insert>
 
-    <update id="updateById" parameterType="com.xian.entity.Blog">
+    <update id="updateById" parameterType="com.xian.blog.pojo.Blog">
         update blog
         <set>
             <if test="title != null">

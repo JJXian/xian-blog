@@ -1,9 +1,9 @@
-package com.xian.entity;
+package com.xian.behavior.pojo;
 
 /**
- * 点赞模块
+ * 收藏模块
  */
-public class Likes {
+public class Collect {
     private Integer id;
     private Integer fid;
     private Integer userId;

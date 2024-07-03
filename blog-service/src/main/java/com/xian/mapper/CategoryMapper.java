@@ -1,7 +1,7 @@
 package com.xian.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xian.entity.Category;
+import com.xian.blog.pojo.Category;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

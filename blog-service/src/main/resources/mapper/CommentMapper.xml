@@ -8,7 +8,7 @@
         id,content,user_id,pid,root_id,time,blog_id,fid,module
     </sql>
 
-    <select id="selectAll" resultType="com.xian.entity.Comment">
+    <select id="selectAll" resultType="com.xian.behavior.pojo.Comment">
         select
         comment.*, user.name as userName,  user.avatar as avatar, u2.name as replyUser
         from comment
@@ -27,7 +27,7 @@
         order by id desc
     </select>
 
-    <select id="selectForUser" resultType="com.xian.entity.Comment">
+    <select id="selectForUser" resultType="com.xian.behavior.pojo.Comment">
         select
         comment.*, user.name as userName,  user.avatar as avatar
         from comment
@@ -41,7 +41,7 @@
         order by comment.id desc
     </select>
 
-    <select id="selectById" resultType="com.xian.entity.Comment">
+    <select id="selectById" resultType="com.xian.behavior.pojo.Comment">
         select
         <include refid="Base_Column_List" />
         from comment
@@ -53,7 +53,7 @@
         where  id = #{id}
     </delete>
 
-    <insert id="insert" parameterType="com.xian.entity.Comment" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.xian.behavior.pojo.Comment" useGeneratedKeys="true" keyProperty="id">
         insert into comment
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -77,7 +77,7 @@
         </trim>
     </insert>
 
-    <update id="updateById" parameterType="com.xian.entity.Comment">
+    <update id="updateById" parameterType="com.xian.behavior.pojo.Comment">
         update comment
         <set>
             <if test="content != null">

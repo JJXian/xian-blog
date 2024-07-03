@@ -2,8 +2,8 @@ package com.xian.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xian.entity.Account;
-import com.xian.entity.ActivitySign;
+import com.xian.role.pojo.Account;
+import com.xian.activity.pojo.ActivitySign;
 import com.xian.enums.ResultCodeEnum;
 import com.xian.exception.CustomException;
 import com.xian.mapper.ActivitySignMapper;

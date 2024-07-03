@@ -1,4 +1,4 @@
-package com.xian.entity;
+package com.xian.role.pojo;
 
 /**
  * 角色用户父类

@@ -13,7 +13,7 @@
         delete from collect where id = #{id}
     </delete>
 
-    <select id="selectUserCollect" resultType="com.xian.entity.Collect">
+    <select id="selectUserCollect" resultType="com.xian.behavior.pojo.Collect">
         select * from collect where fid = #{fid} and user_id = #{userId} and module = #{module}
     </select>
 

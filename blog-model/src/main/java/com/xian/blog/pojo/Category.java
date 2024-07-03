@@ -1,4 +1,4 @@
-package com.xian.entity;
+package com.xian.blog.pojo;
 
 /**
  * 博客分类

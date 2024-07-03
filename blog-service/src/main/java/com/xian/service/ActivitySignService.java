@@ -1,7 +1,7 @@
 package com.xian.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xian.entity.ActivitySign;
+import com.xian.activity.pojo.ActivitySign;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

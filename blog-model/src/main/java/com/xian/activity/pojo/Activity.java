@@ -1,4 +1,4 @@
-package com.xian.entity;
+package com.xian.activity.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

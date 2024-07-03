@@ -1,8 +1,8 @@
 package com.xian.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xian.entity.Activity;
 import com.github.pagehelper.PageInfo;
+import com.xian.activity.pojo.Activity;
 
 import java.util.List;
 

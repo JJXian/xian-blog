@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xian.common.Constants;
 import com.xian.common.Result;
 import com.xian.common.regex.RegexUtils;
-import com.xian.entity.Account;
-import com.xian.entity.User;
 import com.xian.enums.ResultCodeEnum;
+import com.xian.role.pojo.Account;
+import com.xian.role.pojo.User;
 import com.xian.enums.RoleEnum;
 import com.xian.exception.CustomException;
 import com.xian.mapper.UserMapper;
@@ -18,7 +18,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -71,7 +70,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 //        验证邮箱
         String email = user.getEmail();
         if(email!=null && !email.isEmpty() && !RegexUtils.isEmailInvalid(email)){
-            return Result.error(ResultCodeEnum.EMAIL_SYTLE_ERROR);
+            return Result.error(ResultCodeEnum.PHONE_SYTLE_ERROR);
         }
 
         userMapper.updateById(user);

@@ -10,6 +10,7 @@
         <module>blog-common</module>
         <module>blog-basic</module>
         <module>blog-service</module>
+        <module>blog-model</module>
     </modules>
 
     <parent>

@@ -1,8 +1,8 @@
 package com.xian.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xian.entity.Account;
-import com.xian.entity.Likes;
+import com.xian.role.pojo.Account;
+import com.xian.behavior.pojo.Likes;
 import com.xian.mapper.LikesMapper;
 import com.xian.service.LikesService;
 import com.xian.utils.TokenUtils;
