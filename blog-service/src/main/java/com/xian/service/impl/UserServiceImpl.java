@@ -3,6 +3,8 @@ package com.xian.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xian.common.Constants;
+import com.xian.common.Result;
+import com.xian.common.regex.RegexUtils;
 import com.xian.entity.Account;
 import com.xian.entity.User;
 import com.xian.enums.ResultCodeEnum;
@@ -16,6 +18,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -57,9 +60,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         }
     }
 
-    public boolean updateById(User user) {
+
+    @Override
+    public Result updateByUser(User user) {
+        //验证手机号
+        String phone = user.getPhone();
+        if(phone!=null && !phone.isEmpty() && !RegexUtils.isPhoneInvalid(phone)){
+            return Result.error(ResultCodeEnum.PHONE_SYTLE_ERROR);
+        }
+//        验证邮箱
+        String email = user.getEmail();
+        if(email!=null && !email.isEmpty() && !RegexUtils.isEmailInvalid(email)){
+            return Result.error(ResultCodeEnum.EMAIL_SYTLE_ERROR);
+        }
+
         userMapper.updateById(user);
-        return false;
+        return Result.success();
     }
 
     public User selectById(Integer id) {
@@ -75,6 +91,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         List<User> list = userMapper.selectAll(user);
         return PageInfo.of(list);
     }
+
 
 
     /**

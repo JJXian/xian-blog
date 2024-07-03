@@ -47,6 +47,6 @@ minio:
   accessKey: minio
   secretKey: minio123
   bucket: xian-blog
-  endpoint: http://59.110.114.212:9000
-  readPath: http://59.110.114.212:9000
+  endpoint: http://47.98.43.176:9000
+  readPath: http://47.98.43.176:9000
 

@@ -6,6 +6,8 @@ import com.xian.common.Result;
 import com.xian.entity.Account;
 import com.xian.enums.ResultCodeEnum;
 import com.xian.enums.RoleEnum;
+import com.xian.service.AdminService;
+import com.xian.service.UserService;
 import com.xian.service.impl.AdminServiceImpl;
 import com.xian.service.impl.UserServiceImpl;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +21,10 @@ import javax.annotation.Resource;
 public class WebController {
 
     @Resource
-    private AdminServiceImpl adminService;
+    private AdminService adminService;
 
     @Resource
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @GetMapping("/")
     public Result hello() {
@@ -48,24 +50,6 @@ public class WebController {
         return Result.success(account);
     }
 
-    //    /**
-//     * 登录
-//     */
-//    @PostMapping("/login")
-//    public Result login(@RequestBody Account account) {
-//        if (ObjectUtil.isEmpty(account.getUsername()) || ObjectUtil.isEmpty(account.getPassword())
-//                || ObjectUtil.isEmpty(account.getRole())) {
-//            return Result.error(ResultCodeEnum.PARAM_LOST_ERROR);
-//        }
-//        if (RoleEnum.ADMIN.name().equals(account.getRole())) {
-//            account = adminService.login(account);
-//        } else if (RoleEnum.USER.name().equals(account.getRole())) {
-//            account = userService.login(account);
-//        } else {
-//            return Result.error(ResultCodeEnum.PARAM_ERROR);
-//        }
-//        return Result.success(account);
-//    }
 
     /**
      * 注册

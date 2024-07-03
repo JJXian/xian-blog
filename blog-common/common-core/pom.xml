@@ -5,18 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.xian</groupId>
-        <artifactId>xian-blog</artifactId>
+        <artifactId>blog-common</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>blog-common</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>common-core</module>
-        <module>common-regex</module>
-        <module>common-util</module>
-    </modules>
-
+    <artifactId>common-core</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -35,6 +28,4 @@
             <version>5.8.18</version>
         </dependency>
     </dependencies>
-
-
 </project>

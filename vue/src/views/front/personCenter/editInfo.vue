@@ -1,41 +1,44 @@
 <template>
   <div>
-    <el-card>
-      <div style="text-align: right; margin-bottom: 20px">
-        <el-button type="primary" @click="updatePassword">修改密码</el-button>
+      <div style="width: 50%; margin: 5px auto"  class="card" >
+        <div style="text-align: right; margin-bottom: 20px">
+          <el-button type="primary" @click="updatePassword">修改密码</el-button>
+        </div>
+        <el-form :model="user" label-width="80px" style="padding-right: 20px">
+          <div style="margin: 15px; text-align: center">
+            <el-upload
+                class="avatar-uploader"
+                :action="$baseUrl + '/files/upload'"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+            >
+              <img v-if="user.avatar" :src="user.avatar" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </div>
+          <el-form-item label="用户名" prop="username">
+            <el-input v-model="user.username" placeholder="用户名" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="姓名" prop="name">
+            <el-input v-model="user.name" placeholder="姓名"></el-input>
+          </el-form-item>
+          <el-form-item label="电话" prop="phone" :rules="[{ validator: validatePhone, trigger: 'blur' }]">
+            <el-input v-model="user.phone" placeholder="电话"></el-input>
+          </el-form-item>
+          <el-form-item label="个人介绍" prop="info">
+            <el-input v-model="user.info" placeholder="个人介绍"></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱" prop="email">
+            <el-input v-model="user.email" placeholder="邮箱"></el-input>
+          </el-form-item>
+          <div style="text-align: center; margin-bottom: 20px">
+            <el-button type="primary" @click="update">保 存</el-button>
+            <el-button  @click="backToHome">返 回</el-button>
+          </div>
+
+        </el-form>
       </div>
-      <el-form :model="user" label-width="80px" style="padding-right: 20px">
-        <div style="margin: 15px; text-align: center">
-          <el-upload
-              class="avatar-uploader"
-              :action="$baseUrl + '/files/upload'"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-          >
-            <img v-if="user.avatar" :src="user.avatar" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </div>
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="user.username" placeholder="用户名" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model="user.name" placeholder="姓名"></el-input>
-        </el-form-item>
-        <el-form-item label="电话" prop="phone">
-          <el-input v-model="user.phone" placeholder="电话"></el-input>
-        </el-form-item>
-        <el-form-item label="个人介绍" prop="info">
-          <el-input v-model="user.info" placeholder="个人介绍"></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="user.email" placeholder="邮箱"></el-input>
-        </el-form-item>
-        <div style="text-align: center; margin-bottom: 20px">
-          <el-button type="primary" @click="update">保 存</el-button>
-        </div>
-      </el-form>
-    </el-card>
+
 
     <el-dialog title="修改密码" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false" destroy-on-close>
       <el-form :model="user" label-width="80px" style="padding-right: 20px" :rules="rules" ref="formRef">
@@ -60,6 +63,7 @@
 <script>
 
 export default {
+  name: "editInfo",
   data() {
     const validatePassword = (rule, value, callback) => {
       if (value === '') {
@@ -104,8 +108,20 @@ export default {
           this.$emit('update:user')
         } else {
           this.$message.error(res.msg)
+
         }
       })
+    },
+    validatePhone(rule, value, callback) {
+      const phoneRegex = /^1[3456789]\d{9}$/; // 手机号正则表达式
+      if (value && !phoneRegex.test(value)) {
+        callback(new Error('手机号格式不正确'));
+      } else {
+        callback();
+      }
+    },
+    backToHome(){
+      this.$router.push('/front/person'); // 跳转到个人页面，这里假设使用了 Vue Router
     },
     handleAvatarSuccess(response, file, fileList) {
       // 把user的头像属性换成上传的图片的链接

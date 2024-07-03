@@ -1,20 +1,33 @@
 <template>
-  <div class="main-content" style="width: 70%">
-    <div>
-      fdsfsdafa
-      dfafads
 
+  <div class="main-content"  style="width: 55%">
+        <!-- 个人信息区域 -->
+    <div class="personal-info" style="display: flex; align-items: center;">
+      <!-- 用户头像 -->
+      <img :src="user.avatar" alt="" style="width: 100px; height: 100px; border-radius: 50%; margin-right: 20px;">
+
+      <!-- 用户名和用户信息 -->
+      <div style="flex: 1;">
+        <div style="font-weight: bold;font-size: 23px; margin-bottom: 5px;">{{ user.name }}</div>
+        <div style="color: #666; font-size: 13px;">{{ user.info }}</div>
+      </div>
+
+      <!-- 按钮 -->
+      <div style="text-align: right; margin-bottom: 20px">
+        <el-button type="primary" @click="editInfo">编辑信息</el-button>
+      </div>
     </div>
-    <el-tabs v-model="activeName" @tab-click="clickTab" tab-position="left" >
-      <el-tab-pane label="个人资料" name="个人资料">
-        <person-page @update:user="updateUser" />
-      </el-tab-pane>
+
+<!--    <el-tabs v-model="activeName" @tab-click="clickTab" tab-position="left" >-->
+    <el-tabs v-model="activeName" @tab-click="clickTab" >
+
       <el-tab-pane label="我发表的博客" name="我发表的博客">
         <div class="card" style="padding: 5px"><el-button type="primary" @click="addBlog">发表新博客</el-button></div>
         <div style="margin-top: 10px">
           <blog-list type="user" :show-opt="true" />
         </div>
       </el-tab-pane>
+
       <el-tab-pane label="我报名的活动" name="我报名的活动">
         <activity-list type="user" :span="8" />
       </el-tab-pane>
@@ -48,6 +61,12 @@
           <activity-list v-if="commentCurrent === '活动'" :span="8" type="comment"></activity-list>
         </div>
       </el-tab-pane>
+
+<!--      个人资料界面单独抽取-->
+<!--      <el-tab-pane label="个人资料" name="个人资料">-->
+<!--        <person-page @update:user="updateUser" />-->
+<!--      </el-tab-pane>-->
+
     </el-tabs>
 
     <Footer />
@@ -92,7 +111,9 @@ export default {
           { validator: validatePassword, required: true, trigger: 'blur' },
         ],
       },
-      activeName: '个人资料',
+      // activeName: '个人资料',
+      // 设置初始化跳转界面
+      activeName: '我发表的博客',
       likesCurrent: '博客',
       collectCurrent: '博客',
       commentCurrent: '博客',
@@ -131,6 +152,9 @@ export default {
     handleAvatarSuccess(response, file, fileList) {
       // 把user的头像属性换成上传的图片的链接
       this.$set(this.user, 'avatar', response.data)
+    },
+    editInfo(){
+      window.location.href = ('/front/personCenter/editInfo')
     },
     // 修改密码
     updatePassword() {
@@ -196,5 +220,23 @@ export default {
 .active {
   background-color: #2a60c9 !important;
   color: white !important;
+}
+.personal-info {
+background-color: #f0f2f5;
+padding: 20px;
+margin-bottom: 20px;
+border-radius: 5px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.personal-info h2 {
+font-size: 24px;
+margin-bottom: 10px;
+}
+
+.personal-info p {
+margin-bottom: 5px;
+font-size: 16px;
+color: #606266;
 }
 </style>

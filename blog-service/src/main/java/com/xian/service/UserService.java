@@ -1,6 +1,8 @@
 package com.xian.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xian.common.Result;
+import com.xian.entity.Account;
 import com.xian.entity.User;
 import com.github.pagehelper.PageInfo;
 
@@ -21,5 +23,13 @@ public interface UserService extends IService<User> {
 
     PageInfo<User> selectPage(User user, Integer pageNum, Integer pageSize);
 
-    boolean updateById(User user);
+    Result updateByUser(User user);
+
+    Account login(Account account);
+
+    void register(Account account);
+
+    void updatePassword(Account account);
+
+//    boolean updateById(User user);
 }

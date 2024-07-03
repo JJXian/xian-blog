@@ -5,36 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.xian</groupId>
-        <artifactId>xian-blog</artifactId>
+        <artifactId>blog-common</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>blog-common</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>common-core</module>
-        <module>common-regex</module>
-        <module>common-util</module>
-    </modules>
-
+    <artifactId>common-regex</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>5.8.18</version>
-        </dependency>
-    </dependencies>
-
 
 </project>

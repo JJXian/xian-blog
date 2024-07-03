@@ -45,7 +45,7 @@ export default {
         confirmPassword: [
           { validator: validatePassword, required: true, trigger: 'blur' },
         ],
-      }
+      },
     }
   },
   created() {

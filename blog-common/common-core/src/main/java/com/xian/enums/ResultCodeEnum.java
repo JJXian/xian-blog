@@ -15,6 +15,8 @@ public enum ResultCodeEnum {
     USER_NOT_EXIST_ERROR("5004", "用户不存在"),
     PARAM_PASSWORD_ERROR("5005", "原密码输入错误"),
     ACTIVITY_SIGN_ERROR("5006", "活动已报名"),
+    PHONE_SYTLE_ERROR("5007","手机号格式不正确"),
+    EMAIL_SYTLE_ERROR("5008","邮箱格式不正确"),
     ;
 
     public String code;

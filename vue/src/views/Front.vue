@@ -33,6 +33,7 @@
                 <span>{{ user.name }}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
               </div>
             </div>
+
             <el-dropdown-menu slot="dropdown" >
               <el-dropdown-item>
                 <div style="text-decoration: none; height: 40px;display: flex; justify-content: center; align-items: center;" @click="goToPerson">个人中心</div>
@@ -42,8 +43,10 @@
               </el-dropdown-item>
 
             </el-dropdown-menu>
+
           </el-dropdown>
         </div>
+
       </div>
 
     </div>
