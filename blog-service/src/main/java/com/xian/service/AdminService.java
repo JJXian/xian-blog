@@ -1,6 +1,7 @@
 package com.xian.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xian.common.Result;
 import com.xian.role.pojo.Account;
 import com.xian.role.pojo.Admin;
 import com.github.pagehelper.PageInfo;
@@ -9,13 +10,13 @@ import java.util.List;
 
 
 public interface AdminService extends IService<Admin>{
-    void add(Admin admin);
+    Result add(Admin admin);
 
     void deleteById(Integer id);
 
     void deleteBatch(List<Integer> ids);
 
-    boolean updateById(Admin admin);
+    Result updateAdmin(Admin admin);
 
 //    Admin selectById(Integer id);
 

@@ -26,8 +26,8 @@ public class AdminController {
      */
     @PostMapping("/add")
     public Result add(@RequestBody Admin admin) {
-        adminService.add(admin);
-        return Result.success();
+
+        return adminService.add(admin);
     }
 
     /**
@@ -55,8 +55,8 @@ public class AdminController {
      */
     @PutMapping("/update")
     public Result updateById(@RequestBody Admin admin) {
-        adminService.updateById(admin);
-        return Result.success();
+
+        return adminService.updateAdmin(admin);
     }
 
     /**

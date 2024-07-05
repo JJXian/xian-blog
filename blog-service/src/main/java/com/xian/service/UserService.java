@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface UserService extends IService<User> {
 
-    void add(User user);
+    Result add(User user);
 
     void deleteById(Integer id);
 

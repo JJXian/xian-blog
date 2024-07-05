@@ -28,13 +28,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     @Resource
     private UserMapper userMapper;
 
-    public void add(User user) {
+    public Result add(User user) {
         // 业务方法
         // 1. 判断用户账号是否重复
         User dbUser = userMapper.selectByUsername(user.getUsername());
         if (dbUser != null) {
             throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
         }
+
+        //        手机号校验
+        String phone = user.getPhone();
+        if(!phoneRight(phone)){
+            return Result.error(ResultCodeEnum.PHONE_SYTLE_ERROR);
+        }
+//        邮箱校验
+        String email = user.getEmail();
+        if(!emailRight(email)){
+            return Result.error(ResultCodeEnum.EMAIL_SYTLE_ERROR);
+        }
+
         // 2. 判断用户密码是不是空
         if (ObjectUtil.isEmpty(user.getPassword())) {
             user.setPassword(Constants.USER_DEFAULT_PASSWORD); // 默认密码 123
@@ -46,7 +58,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         // 4. 默认用户角色
         user.setRole(RoleEnum.USER.name());
         userMapper.insert(user);
+        return Result.success();
+    }
 
+
+    /**
+     * 校验手机号
+     */
+    private boolean phoneRight(String phone){
+        if(phone != null && !phone.isEmpty() && !RegexUtils.isPhoneInvalid(phone)){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 校验email
+     */
+    private boolean emailRight(String email){
+        if(email != null && !email.isEmpty() && !RegexUtils.isEmailInvalid(email)){
+            return false;
+        }
+        return true;
     }
 
     public void deleteById(Integer id) {
@@ -62,17 +95,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 
     @Override
     public Result updateByUser(User user) {
-        //验证手机号
+        //        手机号校验
         String phone = user.getPhone();
-        if(phone!=null && !phone.isEmpty() && !RegexUtils.isPhoneInvalid(phone)){
+        if(!phoneRight(phone)){
             return Result.error(ResultCodeEnum.PHONE_SYTLE_ERROR);
         }
-//        验证邮箱
+//        邮箱校验
         String email = user.getEmail();
-        if(email!=null && !email.isEmpty() && !RegexUtils.isEmailInvalid(email)){
-            return Result.error(ResultCodeEnum.PHONE_SYTLE_ERROR);
+        if(!emailRight(email)){
+            return Result.error(ResultCodeEnum.EMAIL_SYTLE_ERROR);
         }
-
         userMapper.updateById(user);
         return Result.success();
     }
@@ -138,6 +170,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     public void register(Account account) {
         User user = new User();
         BeanUtils.copyProperties(account, user);
+        String password = account.getPassword();
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
+        user.setPassword(password);
         this.add(user);
     }
 

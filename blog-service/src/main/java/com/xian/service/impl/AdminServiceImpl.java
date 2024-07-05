@@ -4,6 +4,8 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xian.common.Constants;
+import com.xian.common.Result;
+import com.xian.common.regex.RegexUtils;
 import com.xian.role.pojo.Account;
 import com.xian.role.pojo.Admin;
 import com.xian.enums.ResultCodeEnum;
@@ -33,7 +35,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
     /**
      * 新增
      */
-    public void add(Admin admin) {
+    public Result add(Admin admin) {
 //        Admin dbAdmin = adminMapper.selectByUsername(admin.getUsername());
 //         修改为mybatis-plus
 //        1、构建查询条件
@@ -53,9 +55,42 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
         if (ObjectUtil.isEmpty(admin.getName())) {
             admin.setName(admin.getUsername());
         }
+//        手机号校验
+        String phone = admin.getPhone();
+        if(!phoneRight(phone)){
+            return Result.error(ResultCodeEnum.PHONE_SYTLE_ERROR);
+        }
+//        邮箱校验
+        String email = admin.getEmail();
+        if(!emailRight(email)){
+            return Result.error(ResultCodeEnum.EMAIL_SYTLE_ERROR);
+        }
+
         admin.setRole(RoleEnum.ADMIN.name());
         adminMapper.insert(admin);
+        return Result.success();
     }
+
+    /**
+     * 校验手机号
+     */
+    private boolean phoneRight(String phone){
+        if(phone != null && !phone.isEmpty() && !RegexUtils.isPhoneInvalid(phone)){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 校验email
+     */
+    private boolean emailRight(String email){
+        if(email != null && !email.isEmpty() && !RegexUtils.isEmailInvalid(email)){
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * 删除
@@ -76,13 +111,23 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
     /**
      * 修改
      */
-    public boolean updateById(Admin admin) {
+    public Result updateAdmin(Admin admin) {
+//        手机号校验
+        String phone = admin.getPhone();
+        if(!phoneRight(phone)){
+            return Result.error(ResultCodeEnum.PHONE_SYTLE_ERROR);
+        }
+//        邮箱校验
+        String email = admin.getEmail();
+        if(!emailRight(email)){
+            return Result.error(ResultCodeEnum.EMAIL_SYTLE_ERROR);
+        }
+
         int row = adminMapper.updateById(admin);
         if(row!=0){
-            return true;
+            return Result.success();
         }
-        return false;
-
+        return Result.error();
     }
 
     /**

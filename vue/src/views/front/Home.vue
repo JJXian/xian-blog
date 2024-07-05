@@ -17,9 +17,10 @@
 
       <div style="width: 260px">
         <div class="card" style="margin-bottom: 10px">
-          <div style="font-size: 20px; font-weight: bold; margin-bottom: 10px">欢迎您！😊</div>
-<!--          <a href="/front/person"><div style="color: #666">写下博客记录美好的一天</div></a>-->
-          <a href="/front/newBlog"><div style="color: #666">写下博客记录美好的一天</div></a>
+          <div style="font-size: 20px; font-weight: bold; margin-bottom: 10px">创作中心✒️</div>
+          <a href="/front/newBlog" class="blog-link">
+            <div>写下博客记录美好的一天</div>
+          </a>
         </div>
 
         <div class="card" style="margin-bottom: 10px">
@@ -149,6 +150,15 @@ export default {
   color: #1482f0; /* 保持激活时的文本颜色 */
 }
 
+.blog-link {
+  text-decoration: none; /* 去除下划线 */
+  color: #666; /* 默认文本颜色 */
+}
+
+.blog-link:hover {
+  color: #1482f0; /* 悬停时的文本颜色（红色示例） */
+  cursor: pointer; /* 鼠标悬停时显示手型 */
+}
 
 
 
