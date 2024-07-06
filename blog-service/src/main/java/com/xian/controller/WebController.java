@@ -2,7 +2,7 @@ package com.xian.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.xian.common.Result;
+import com.xian.common.result.Result;
 import com.xian.model.role.pojo.Account;
 import com.xian.common.enums.ResultCodeEnum;
 import com.xian.common.enums.RoleEnum;

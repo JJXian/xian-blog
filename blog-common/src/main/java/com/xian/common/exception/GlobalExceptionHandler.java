@@ -2,7 +2,7 @@ package com.xian.common.exception;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import com.xian.common.Result;
+import com.xian.common.result.Result;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

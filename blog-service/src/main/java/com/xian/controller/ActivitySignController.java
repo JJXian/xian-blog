@@ -1,6 +1,6 @@
 package com.xian.controller;
 
-import com.xian.common.Result;
+import com.xian.common.result.Result;
 import com.xian.model.activity.pojo.ActivitySign;
 import com.xian.service.ActivitySignService;
 import com.github.pagehelper.PageInfo;

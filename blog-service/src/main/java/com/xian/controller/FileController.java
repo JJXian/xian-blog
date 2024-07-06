@@ -5,7 +5,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.StrUtil;
-import com.xian.common.Result;
+import com.xian.common.result.Result;
 import com.xian.file.service.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**

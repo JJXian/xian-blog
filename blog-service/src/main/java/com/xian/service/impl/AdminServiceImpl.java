@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xian.common.constants.commonConstants;
-import com.xian.common.Result;
+import com.xian.common.result.Result;
 import com.xian.common.regex.RegexUtils;
 import com.xian.common.enums.ResultCodeEnum;
 import com.xian.model.role.pojo.Account;
@@ -18,7 +18,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -166,7 +165,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
 
 
         if (ObjectUtil.isNull(dbAdmin)) {
-            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
+            throw new com.xian.common.exception.CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
+
         }
 //        进行MD5加密
         String password = account.getPassword();

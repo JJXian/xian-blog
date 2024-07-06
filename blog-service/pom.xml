@@ -86,9 +86,7 @@
             <groupId>com.xian</groupId>
             <artifactId>blog-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
-
 <!--        文件上传类-->
         <dependency>
             <groupId>com.xian</groupId>

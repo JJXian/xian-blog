@@ -1,6 +1,6 @@
 package com.xian.controller;
 
-import com.xian.common.Result;
+import com.xian.common.result.Result;
 import com.xian.model.sys.pojo.Notice;
 import com.xian.service.NoticeService;
 import com.github.pagehelper.PageInfo;

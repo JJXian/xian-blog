@@ -1,4 +1,4 @@
-package com.xian.common;
+package com.xian.common.result;
 
 
 import com.xian.common.enums.ResultCodeEnum;

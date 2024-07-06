@@ -2,14 +2,12 @@ package com.xian.service.impl;
 
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xian.common.redis.CacheService;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.behavior.pojo.Likes;
 import com.xian.mapper.LikesMapper;
 import com.xian.service.LikesService;
 import com.xian.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,8 +19,6 @@ public class LikesServiceImpl extends ServiceImpl<LikesMapper,Likes> implements 
     @Resource
     LikesMapper likesMapper;
 
-    @Autowired
-    CacheService cacheService;
 
     public void set(Likes likes) {
         Account currentUser = TokenUtils.getCurrentUser();

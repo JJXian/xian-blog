@@ -1,7 +1,7 @@
 package com.xian.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xian.common.Result;
+import com.xian.common.result.Result;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.role.pojo.User;
 import com.github.pagehelper.PageInfo;

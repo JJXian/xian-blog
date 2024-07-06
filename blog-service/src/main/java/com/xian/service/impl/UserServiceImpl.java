@@ -3,7 +3,7 @@ package com.xian.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xian.common.constants.commonConstants;
-import com.xian.common.Result;
+import com.xian.common.result.Result;
 import com.xian.common.regex.RegexUtils;
 import com.xian.common.enums.ResultCodeEnum;
 import com.xian.model.role.pojo.Account;
@@ -33,7 +33,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         // 1. 判断用户账号是否重复
         User dbUser = userMapper.selectByUsername(user.getUsername());
         if (dbUser != null) {
-            throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
+            return Result.error(ResultCodeEnum.USER_EXIST_ERROR);
         }
 
         //        手机号校验
@@ -131,7 +131,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     public Account login(Account account) {
         Account dbUser = userMapper.selectByUsername(account.getUsername());
         if (ObjectUtil.isNull(dbUser)) {
-            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
+//            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
+            throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
         }
         String password = account.getPassword();
         password = DigestUtils.md5DigestAsHex(password.getBytes());

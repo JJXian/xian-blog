@@ -1,6 +1,6 @@
 package com.xian.controller;
 
-import com.xian.common.Result;
+import com.xian.common.result.Result;
 import com.xian.model.behavior.pojo.Likes;
 import com.xian.service.LikesService;
 import org.springframework.web.bind.annotation.PostMapping;

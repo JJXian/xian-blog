@@ -1,6 +1,6 @@
 package com.xian.controller;
 
-import com.xian.common.Result;
+import com.xian.common.result.Result;
 import com.xian.model.behavior.pojo.Comment;
 import com.xian.service.CommentService;
 import com.github.pagehelper.PageInfo;
