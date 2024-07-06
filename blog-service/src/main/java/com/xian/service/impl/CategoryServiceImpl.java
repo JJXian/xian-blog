@@ -1,7 +1,7 @@
 package com.xian.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xian.blog.pojo.Category;
+import com.xian.model.blog.pojo.Category;
 import com.xian.mapper.CategoryMapper;
 import com.xian.service.CategoryService;
 import com.github.pagehelper.PageHelper;

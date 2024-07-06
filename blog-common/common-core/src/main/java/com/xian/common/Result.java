@@ -1,7 +1,7 @@
 package com.xian.common;
 
 
-import com.xian.enums.ResultCodeEnum;
+import com.xian.common.enums.ResultCodeEnum;
 
 public class Result {
     private String code;

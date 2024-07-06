@@ -2,14 +2,14 @@ package com.xian.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xian.common.Constants;
+import com.xian.common.constants.commonConstants;
 import com.xian.common.Result;
 import com.xian.common.regex.RegexUtils;
-import com.xian.enums.ResultCodeEnum;
-import com.xian.role.pojo.Account;
-import com.xian.role.pojo.User;
-import com.xian.enums.RoleEnum;
-import com.xian.exception.CustomException;
+import com.xian.common.enums.ResultCodeEnum;
+import com.xian.model.role.pojo.Account;
+import com.xian.model.role.pojo.User;
+import com.xian.common.enums.RoleEnum;
+import com.xian.common.exception.CustomException;
 import com.xian.mapper.UserMapper;
 import com.xian.service.UserService;
 import com.xian.utils.TokenUtils;
@@ -49,7 +49,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 
         // 2. 判断用户密码是不是空
         if (ObjectUtil.isEmpty(user.getPassword())) {
-            user.setPassword(Constants.USER_DEFAULT_PASSWORD); // 默认密码 123
+            user.setPassword(commonConstants.USER_DEFAULT_PASSWORD); // 默认密码 123
         }
         // 3. 判断用户名称是不是空
         if (ObjectUtil.isEmpty(user.getName())) {

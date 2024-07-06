@@ -1,7 +1,7 @@
 package com.xian.controller;
 
 import com.xian.common.Result;
-import com.xian.role.pojo.Admin;
+import com.xian.model.role.pojo.Admin;
 import com.xian.service.AdminService;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;

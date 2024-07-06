@@ -1,7 +1,8 @@
 package com.xian.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xian.activity.pojo.Activity;
+import com.xian.model.activity.pojo.Activity;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 /**
  * 操作activity相关数据接口
  */
+@Mapper
 public interface ActivityMapper extends BaseMapper<Activity> {
 
     /**

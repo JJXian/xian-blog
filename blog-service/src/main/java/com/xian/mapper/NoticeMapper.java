@@ -1,7 +1,7 @@
 package com.xian.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xian.sys.pojo.Notice;
+import com.xian.model.sys.pojo.Notice;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -3,14 +3,14 @@ package com.xian.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xian.common.Constants;
+import com.xian.common.constants.commonConstants;
 import com.xian.common.Result;
 import com.xian.common.regex.RegexUtils;
-import com.xian.role.pojo.Account;
-import com.xian.role.pojo.Admin;
-import com.xian.enums.ResultCodeEnum;
-import com.xian.enums.RoleEnum;
-import com.xian.exception.CustomException;
+import com.xian.common.enums.ResultCodeEnum;
+import com.xian.model.role.pojo.Account;
+import com.xian.model.role.pojo.Admin;
+import com.xian.common.enums.RoleEnum;
+import com.xian.common.exception.CustomException;
 import com.xian.mapper.AdminMapper;
 import com.xian.service.AdminService;
 import com.xian.utils.TokenUtils;
@@ -50,7 +50,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
             throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
         }
         if (ObjectUtil.isEmpty(admin.getPassword())) {
-            admin.setPassword(Constants.USER_DEFAULT_PASSWORD);
+            admin.setPassword(commonConstants.USER_DEFAULT_PASSWORD);
         }
         if (ObjectUtil.isEmpty(admin.getName())) {
             admin.setName(admin.getUsername());

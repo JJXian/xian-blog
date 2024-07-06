@@ -1,7 +1,8 @@
 package com.xian.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xian.role.pojo.Admin;
+import com.xian.model.role.pojo.Admin;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 /**
  * 操作admin相关数据接口
 */
+@Mapper
 public interface AdminMapper extends BaseMapper<Admin> {
 
     /**

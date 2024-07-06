@@ -1,7 +1,7 @@
 package com.xian.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xian.sys.pojo.Notice;
+import com.xian.model.sys.pojo.Notice;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

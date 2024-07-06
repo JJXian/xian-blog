@@ -8,8 +8,21 @@
           <div style="font-weight: bold; font-size: 24px; margin-bottom: 10px">{{ activity.name }}</div>
           <div style="color: #666; font-size: 13px; line-height: 22px; text-align: justify; margin-bottom: 10px">{{ activity.descr }}</div>
           <div style="color: #666; margin-bottom: 10px"><i class="el-icon-date"></i> 时间 <span style="margin-left: 5px">{{ activity.start }} ~ {{ activity.end }}</span></div>
-          <div style="color: #666; margin-bottom: 10px"><i class="el-icon-location"></i> 地址
-            <a style="color: #2a60c9; margin-left: 5px" :href="activity.address" v-if="activity.form === '线上'">{{ activity.address }}</a>
+
+          <!--    在网站内部跳转线上活动链接，需要写活动页面-->
+          <!--          <div style="color: #666; margin-bottom: 10px"><i class="el-icon-location"></i> 地址-->
+<!--            <a style="color: #2a60c9; margin-left: 5px" :href="activity.address" v-if="activity.form === '线上'">{{ activity.address }}</a>-->
+<!--            <span style="margin-left: 5px" v-else>{{ activity.address }}</span>-->
+<!--            <el-tag style="margin-left: 5px" type="primary" size="mini">{{ activity.form }}</el-tag>-->
+<!--          </div>-->
+<!--          线上地址链接到网站以外-->
+          <div style="color: #666; margin-bottom: 10px">
+            <i class="el-icon-location"></i> 地址
+            <span style="cursor: pointer; color: #2a60c9; margin-left: 5px"
+                  @click="searchAddress"
+                  v-if="activity.form === '线上'">
+                  {{ activity.address }}
+            </span>
             <span style="margin-left: 5px" v-else>{{ activity.address }}</span>
             <el-tag style="margin-left: 5px" type="primary" size="mini">{{ activity.form }}</el-tag>
           </div>
@@ -118,6 +131,14 @@ export default {
       this.$request.get('/activity/selectById/' + this.activityId).then(res => {
         this.activity = res.data || {}
       })
+    },
+    searchAddress() {
+      if (this.activity.form === '线上') {
+        // 这里可以根据需要进行处理，比如跳转到搜索引擎页面搜索该网址
+        // let searchUrl = this.activity.address;
+        let searchUrl = 'https://' + encodeURIComponent(this.activity.address);
+        window.location.href = searchUrl;
+      }
     }
   }
 }

@@ -11,8 +11,8 @@
         </el-form-item>
         <el-form-item prop="role">
           <el-radio-group v-model="form.role">
-            <el-radio label="ADMIN">管理员</el-radio>
             <el-radio label="USER">用户</el-radio>
+            <el-radio label="ADMIN">管理员</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item prop="code">
@@ -45,7 +45,7 @@ export default {
   },
   data() {
     return {
-      form: { role: 'ADMIN' },
+      form: { role: 'USER' },
       rules: {
         username: [
           { required: true, message: '请输入账号', trigger: 'blur' },

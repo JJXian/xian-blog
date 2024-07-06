@@ -1,7 +1,7 @@
 package com.xian.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xian.role.pojo.User;
+import com.xian.model.role.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

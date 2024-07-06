@@ -4,9 +4,9 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.xian.common.Constants;
-import com.xian.role.pojo.Account;
-import com.xian.enums.RoleEnum;
+import com.xian.common.constants.commonConstants;
+import com.xian.model.role.pojo.Account;
+import com.xian.common.enums.RoleEnum;
 import com.xian.service.AdminService;
 import com.xian.service.UserService;
 import com.xian.service.impl.AdminServiceImpl;
@@ -60,7 +60,7 @@ public class TokenUtils {
     public static Account getCurrentUser() {
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            String token = request.getHeader(Constants.TOKEN);
+            String token = request.getHeader(commonConstants.TOKEN);
             if (ObjectUtil.isNotEmpty(token)) {
                 String userRole = JWT.decode(token).getAudience().get(0);
                 String userId = userRole.split("-")[0];  // 获取用户id

@@ -1,7 +1,7 @@
 package com.xian.controller;
 
 import com.xian.common.Result;
-import com.xian.behavior.pojo.Collect;
+import com.xian.model.behavior.pojo.Collect;
 import com.xian.service.CollectService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

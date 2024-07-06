@@ -1,8 +1,8 @@
 package com.xian.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xian.role.pojo.Account;
-import com.xian.behavior.pojo.Collect;
+import com.xian.model.role.pojo.Account;
+import com.xian.model.behavior.pojo.Collect;
 import com.xian.mapper.CollectMapper;
 import com.xian.service.CollectService;
 import com.xian.utils.TokenUtils;

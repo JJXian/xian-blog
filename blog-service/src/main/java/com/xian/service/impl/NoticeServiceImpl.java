@@ -2,8 +2,8 @@ package com.xian.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xian.role.pojo.Account;
-import com.xian.sys.pojo.Notice;
+import com.xian.model.role.pojo.Account;
+import com.xian.model.sys.pojo.Notice;
 import com.xian.mapper.NoticeMapper;
 import com.xian.service.NoticeService;
 import com.xian.utils.TokenUtils;

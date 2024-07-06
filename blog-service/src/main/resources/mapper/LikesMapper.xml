@@ -13,7 +13,7 @@
         delete from likes where id = #{id}
     </delete>
 
-    <select id="selectUserLikes" resultType="com.xian.behavior.pojo.Likes">
+    <select id="selectUserLikes" resultType="com.xian.model.behavior.pojo.Likes">
         select * from likes where fid = #{fid} and user_id = #{userId} and module = #{module}
     </select>
 

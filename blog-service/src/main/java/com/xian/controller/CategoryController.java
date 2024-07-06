@@ -1,7 +1,7 @@
 package com.xian.controller;
 
 import com.xian.common.Result;
-import com.xian.blog.pojo.Category;
+import com.xian.model.blog.pojo.Category;
 import com.xian.service.CategoryService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;

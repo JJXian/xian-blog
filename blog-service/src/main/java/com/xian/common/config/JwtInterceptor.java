@@ -5,11 +5,11 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.xian.common.Constants;
-import com.xian.role.pojo.Account;
-import com.xian.enums.ResultCodeEnum;
-import com.xian.enums.RoleEnum;
-import com.xian.exception.CustomException;
+import com.xian.common.constants.commonConstants;
+import com.xian.model.role.pojo.Account;
+import com.xian.common.enums.ResultCodeEnum;
+import com.xian.common.enums.RoleEnum;
+import com.xian.common.exception.CustomException;
 import com.xian.service.impl.AdminServiceImpl;
 import com.xian.service.impl.UserServiceImpl;
 import org.slf4j.Logger;
@@ -38,10 +38,10 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 1. 从http请求的header中获取token
-        String token = request.getHeader(Constants.TOKEN);
+        String token = request.getHeader(commonConstants.TOKEN);
         if (ObjectUtil.isEmpty(token)) {
             // 如果没拿到，从参数里再拿一次
-            token = request.getParameter(Constants.TOKEN);
+            token = request.getParameter(commonConstants.TOKEN);
         }
         // 2. 开始执行认证
         if (ObjectUtil.isEmpty(token)) {

@@ -8,7 +8,7 @@
         id,username,password,name,phone,email,avatar,role
     </sql>
 
-    <select id="selectAll" resultType="com.xian.role.pojo.Admin">
+    <select id="selectAll" resultType="com.xian.model.role.pojo.Admin">
         select
         <include refid="Base_Column_List" />
         from admin
@@ -24,7 +24,7 @@
         </where>
     </select>
 
-    <select id="selectById" resultType="com.xian.role.pojo.Admin">
+    <select id="selectById" resultType="com.xian.model.role.pojo.Admin">
         select
         <include refid="Base_Column_List" />
         from admin
@@ -36,7 +36,7 @@
         where  id = #{id}
     </delete>
 
-    <insert id="insert" parameterType="com.xian.role.pojo.Admin" useGeneratedKeys="true">
+    <insert id="insert" parameterType="com.xian.model.role.pojo.Admin" useGeneratedKeys="true">
         insert into admin
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
@@ -60,7 +60,7 @@
         </trim>
     </insert>
 
-    <update id="updateById" parameterType="com.xian.role.pojo.Admin">
+    <update id="updateById" parameterType="com.xian.model.role.pojo.Admin">
         update admin
         <set>
             <if test="username != null">

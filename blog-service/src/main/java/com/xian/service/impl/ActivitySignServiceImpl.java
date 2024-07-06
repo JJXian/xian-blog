@@ -2,10 +2,10 @@ package com.xian.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xian.role.pojo.Account;
-import com.xian.activity.pojo.ActivitySign;
-import com.xian.enums.ResultCodeEnum;
-import com.xian.exception.CustomException;
+import com.xian.model.role.pojo.Account;
+import com.xian.model.activity.pojo.ActivitySign;
+import com.xian.common.enums.ResultCodeEnum;
+import com.xian.common.exception.CustomException;
 import com.xian.mapper.ActivitySignMapper;
 import com.xian.service.ActivitySignService;
 import com.xian.utils.TokenUtils;

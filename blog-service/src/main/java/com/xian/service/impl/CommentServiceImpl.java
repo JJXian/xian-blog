@@ -2,9 +2,9 @@ package com.xian.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xian.role.pojo.Account;
-import com.xian.behavior.pojo.Comment;
-import com.xian.enums.RoleEnum;
+import com.xian.model.role.pojo.Account;
+import com.xian.model.behavior.pojo.Comment;
+import com.xian.common.enums.RoleEnum;
 import com.xian.mapper.CommentMapper;
 import com.xian.service.CommentService;
 import com.xian.utils.TokenUtils;
