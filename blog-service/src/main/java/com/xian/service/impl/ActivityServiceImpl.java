@@ -2,6 +2,7 @@ package com.xian.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xian.common.result.Result;
 import com.xian.model.activity.pojo.Activity;
 import com.xian.model.activity.pojo.ActivitySign;
 import com.xian.model.behavior.pojo.Collect;
@@ -76,7 +77,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
     /**
      * 根据ID查询
      */
-    public Activity selectById(Integer id) {
+    public Result selectById(Integer id) {
         Activity activity = activityMapper.selectById(id);
 
         this.setAct(activity, TokenUtils.getCurrentUser());
@@ -91,7 +92,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
 
         Collect collect = collectService.selectUserCollect(id, LikesModuleEnum.ACTIVITY.getValue());
         activity.setIsCollect(collect != null);
-        return activity;
+        return Result.success(activity);
     }
 
     /**

@@ -2,9 +2,14 @@ package com.xian.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xian.common.constants.RedisConstants;
+import com.xian.common.enums.ResultCodeEnum;
+import com.xian.common.exception.CustomException;
+import com.xian.common.result.Result;
 import com.xian.model.behavior.pojo.Collect;
 import com.xian.model.behavior.pojo.Likes;
 import com.xian.model.blog.pojo.Blog;
@@ -17,31 +22,40 @@ import com.xian.service.BlogService;
 import com.xian.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
  * 博客信息业务处理
  **/
 @Service
+@Slf4j
 public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements BlogService {
 
     @Resource
     private BlogMapper blogMapper;
 
     @Resource
-    UserServiceImpl userService;
+    private UserServiceImpl userService;
 
     @Resource
-    LikesServiceImpl likesService;
+    private LikesServiceImpl likesService;
 
     @Resource
-    CollectServiceImpl collectService;
+    private CollectServiceImpl collectService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 新增
@@ -72,20 +86,51 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     }
 
     /**
-     * 修改
-     *
+     * 更新
+     * 更新数据库和更新缓存同时完成，添加事务注解开启事务
      * @return
      */
+    @Transactional
     public boolean updateById(Blog blog) {
+        Integer id = blog.getId();
+        if(id == null){
+            throw new CustomException("300","id不能为空");
+        }
+//        1、更新数据库
         blogMapper.updateById(blog);
-        return false;
+//        2、 删除缓存
+         stringRedisTemplate.delete(RedisConstants.CACHE_BLOG_KEY+id);
+        return true;
     }
 
     /**
      * 根据ID查询
      */
     public Blog selectById(Integer id) {
-        Blog blog = blogMapper.selectById(id);
+
+//        使用redis缓存做查询
+        String key = RedisConstants.CACHE_BLOG_KEY+id;
+//        1、从redis中查询博客缓存
+        String blogJson = stringRedisTemplate.opsForValue().get(key);
+        Blog blog ;
+//        2、判断是否存在
+        if (StrUtil.isNotBlank(blogJson)) {
+            //        3、如果命中 则返回
+            blog = JSONUtil.toBean(blogJson,Blog.class);
+            log.info("在缓存中查询到博客++++++++++++++++++++："+blog.getId());
+        }else {
+//        4、未命中， 去查询数据库
+            blog = blogMapper.selectById(id);
+//        5、数据库不存在 返回错误
+            if(blog == null){
+                throw new CustomException(ResultCodeEnum.BLOG_NOT_EXIST_ERROR);
+            }
+//        6、数据库存在 写缓存 并返回
+            stringRedisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(blog), RedisConstants.CACHE_BLOG_TTL,TimeUnit.MINUTES);
+            log.info("在shujuku中查询到博客++++++++++++++++++++："+blog.getId());
+
+        }
+//        设置博客其他信息
         User user = userService.selectById(blog.getUserId());
 
         List<Blog> userBlogList = blogMapper.selectUserBlog(user.getId());

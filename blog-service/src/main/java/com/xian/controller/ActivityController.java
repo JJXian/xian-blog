@@ -67,8 +67,9 @@ public class ActivityController {
      */
     @GetMapping("/selectById/{id}")
     public Result selectById(@PathVariable Integer id) {
-        Activity activity = activityService.selectById(id);
-        return Result.success(activity);
+//        Activity activity = activityService.selectById(id);
+//        return Result.success(activity);
+        return activityService.selectById(id);
     }
 
     /**

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div style="width: 400px; padding: 50px 30px; background-color: white; border-radius: 5px;">
-      <div style="text-align: center; font-size: 24px; margin-bottom: 30px; color: #333">博客平台</div>
+      <div style="text-align: center; font-size: 24px; margin-bottom: 30px; color: #333">码艺人中心</div>
       <el-form :model="form" :rules="rules" ref="formRef"@keyup.enter.native="login">
         <el-form-item prop="username">
           <el-input size="medium" prefix-icon="el-icon-user" placeholder="请输入账号" v-model="form.username"></el-input>

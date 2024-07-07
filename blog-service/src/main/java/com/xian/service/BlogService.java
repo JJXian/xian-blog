@@ -1,6 +1,7 @@
 package com.xian.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xian.common.result.Result;
 import com.xian.model.blog.pojo.Blog;
 import com.github.pagehelper.PageInfo;
 

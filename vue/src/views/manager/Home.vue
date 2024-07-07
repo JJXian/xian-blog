@@ -42,11 +42,11 @@
               <h4 style="margin-bottom: 10px">后端技术</h4>
               <ul class="tech-list">
                 <li>SpringBoot</li>
-                <li>Spring Security</li>
-                <li>JWT</li>
-                <li>MyBatis</li>
-                <li>Druid</li>
+                <li>MyBatis Plus</li>
                 <li>Fastjson</li>
+                <li>JWT</li>
+                <li>Redis</li>
+                <li>Minio</li>
                 <li>...</li>
               </ul>
             </el-col>
@@ -56,8 +56,8 @@
                 <li>Vue</li>
                 <li>Element-ui</li>
                 <li>Axios</li>
-                <li>Sass</li>
-                <li>Quill</li>
+                <li>Nginx</li>
+                <li>CSS</li>
                 <li>...</li>
               </ul>
             </el-col>
