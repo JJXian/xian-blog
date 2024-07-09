@@ -2,6 +2,7 @@ package com.xian.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xian.common.result.Result;
+import com.xian.model.role.dtos.LoginDTO;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.role.pojo.Admin;
 import com.github.pagehelper.PageInfo;
@@ -24,7 +25,8 @@ public interface AdminService extends IService<Admin>{
 
     PageInfo<Admin> selectPage(Admin admin, Integer pageNum, Integer pageSize);
 
-    Account login(Account account);
+//    Account login(Account account);
+    Result login(LoginDTO loginDTO);
 
     void updatePassword(Account account);
 }

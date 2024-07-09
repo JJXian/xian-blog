@@ -50,7 +50,7 @@
         </div>
 
         <div style="line-height: 30px; color: #666; padding: 0 10px">
-          <div>举报邮箱： nicaicaijubao</div>
+          <div>联系邮箱： nicaicaijubao</div>
           <div>座机电话： 12812812888</div>
         </div>
 

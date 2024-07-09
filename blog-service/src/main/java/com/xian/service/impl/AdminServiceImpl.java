@@ -7,6 +7,7 @@ import com.xian.common.constants.commonConstants;
 import com.xian.common.result.Result;
 import com.xian.common.regex.RegexUtils;
 import com.xian.common.enums.ResultCodeEnum;
+import com.xian.model.role.dtos.LoginDTO;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.role.pojo.Admin;
 import com.xian.common.enums.RoleEnum;
@@ -155,12 +156,39 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
     /**
      * 登录
      */
-    public Account login(Account account) {
-//        Account dbAdmin = adminMapper.selectByUsername(account.getUsername());
+//    public Account login(Account account) {
+//
+//        QueryWrapper<Admin> wrapper = new QueryWrapper<Admin>()
+//                .select("*")
+//                .eq("username",account.getUsername());
+//        Admin dbAdmin = adminMapper.selectOne(wrapper);
+//
+//
+//        if (ObjectUtil.isNull(dbAdmin)) {
+//            throw new com.xian.common.exception.CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
+//
+//        }
+////        进行MD5加密
+//        String password = account.getPassword();
+//        password = DigestUtils.md5DigestAsHex(password.getBytes());
+//        if (!password.equals(dbAdmin.getPassword())) {
+//            throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
+//        }
+//
+////        if (!account.getPassword().equals(dbAdmin.getPassword())) {
+////            throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
+////        }
+//        // 生成token
+//        String tokenData = dbAdmin.getId() + "-" + RoleEnum.ADMIN.name();
+//        String token = TokenUtils.createToken(tokenData, dbAdmin.getPassword());
+//        dbAdmin.setToken(token);
+//        return dbAdmin;
+//    }
+    public Result login(LoginDTO loginDTO) {
 
         QueryWrapper<Admin> wrapper = new QueryWrapper<Admin>()
                 .select("*")
-                .eq("username",account.getUsername());
+                .eq("username",loginDTO.getUsername());
         Admin dbAdmin = adminMapper.selectOne(wrapper);
 
 
@@ -169,7 +197,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
 
         }
 //        进行MD5加密
-        String password = account.getPassword();
+        String password = loginDTO.getPassword();
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         if (!password.equals(dbAdmin.getPassword())) {
             throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
@@ -182,7 +210,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
         String tokenData = dbAdmin.getId() + "-" + RoleEnum.ADMIN.name();
         String token = TokenUtils.createToken(tokenData, dbAdmin.getPassword());
         dbAdmin.setToken(token);
-        return dbAdmin;
+        return Result.success(dbAdmin);
     }
 
 //    /**

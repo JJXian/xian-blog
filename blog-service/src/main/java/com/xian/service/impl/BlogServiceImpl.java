@@ -1,6 +1,7 @@
 package com.xian.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
@@ -25,6 +26,7 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.convert.RedisData;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,29 +109,15 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
      * 根据ID查询
      */
     public Blog selectById(Integer id) {
+//      缓存穿透
+//        Blog blog = queryWithPassThrough(id);
 
-//        使用redis缓存做查询
-        String key = RedisConstants.CACHE_BLOG_KEY+id;
-//        1、从redis中查询博客缓存
-        String blogJson = stringRedisTemplate.opsForValue().get(key);
-        Blog blog ;
-//        2、判断是否存在
-        if (StrUtil.isNotBlank(blogJson)) {
-            //        3、如果命中 则返回
-            blog = JSONUtil.toBean(blogJson,Blog.class);
-            log.info("在缓存中查询到博客++++++++++++++++++++："+blog.getId());
-        }else {
-//        4、未命中， 去查询数据库
-            blog = blogMapper.selectById(id);
-//        5、数据库不存在 返回错误
-            if(blog == null){
-                throw new CustomException(ResultCodeEnum.BLOG_NOT_EXIST_ERROR);
-            }
-//        6、数据库存在 写缓存 并返回
-            stringRedisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(blog), RedisConstants.CACHE_BLOG_TTL,TimeUnit.MINUTES);
-            log.info("在shujuku中查询到博客++++++++++++++++++++："+blog.getId());
-
+//        互斥锁解决缓存击穿
+        Blog blog = queryWithMutex(id);
+        if(blog == null){
+            return null;
         }
+
 //        设置博客其他信息
         User user = userService.selectById(blog.getUserId());
 
@@ -167,6 +155,118 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     }
 
     /**
+     * 互斥锁解决缓存击穿
+     * @param id
+     * @return
+     */
+    public Blog queryWithMutex(Integer id){
+        //        使用redis缓存做查询
+        String key = RedisConstants.CACHE_BLOG_KEY+id;
+//        1、从redis中查询博客缓存
+        String blogJson = stringRedisTemplate.opsForValue().get(key);
+        Blog blog ;
+//        2、判断是否存在
+        if (StrUtil.isNotBlank(blogJson)) {
+            //        3、如果命中 则返回
+            blog = JSONUtil.toBean(blogJson,Blog.class);
+            log.info("在缓存中查询到博客++++++++++++++++++++："+blog.getId());
+        }else {
+//            判断是不是空数据 解决缓存穿透问题
+            if(blogJson != null){
+                throw new CustomException(ResultCodeEnum.BLOG_NOT_EXIST_ERROR);
+            }
+        //  实现缓存重建
+//            获取互斥锁
+            String lockKey = RedisConstants.LOCK_BLOG_KEY + id;
+            try{
+                boolean isLock = tryLock(lockKey);
+//            判断是否成功
+                if(!isLock){
+//            失败则休眠并重试
+                    Thread.sleep(50);
+                    queryWithMutex(id);
+                }
+//        4、未命中， 去查询数据库
+                blog = blogMapper.selectById(id);
+//        5、数据库不存在 返回错误
+                if(blog == null){
+//                如果为空 就缓存空数据
+                    stringRedisTemplate.opsForValue().set(key,"",RedisConstants.CACHE_NULL_TTL,TimeUnit.MINUTES);
+                    throw new CustomException(ResultCodeEnum.BLOG_NOT_EXIST_ERROR);
+                }
+//        6、数据库存在 写缓存 并返回
+                stringRedisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(blog), RedisConstants.CACHE_BLOG_TTL,TimeUnit.MINUTES);
+                log.info("在shujuku中查询到博客++++++++++++++++++++："+blog.getId());
+            }catch(InterruptedException e){
+                throw new RuntimeException(e);
+            }finally {
+//            释放互斥锁
+                unLock(lockKey);
+            }
+
+        }
+        return blog;
+    }
+
+
+    /**
+     * 缓存穿透
+     * @param id
+     * @return
+     */
+    public Blog queryWithPassThrough(Integer id){
+        //        使用redis缓存做查询
+        String key = RedisConstants.CACHE_BLOG_KEY+id;
+//        1、从redis中查询博客缓存
+        String blogJson = stringRedisTemplate.opsForValue().get(key);
+        Blog blog ;
+//        2、判断是否存在
+        if (StrUtil.isNotBlank(blogJson)) {
+            //        3、如果命中 则返回
+            blog = JSONUtil.toBean(blogJson,Blog.class);
+            log.info("在缓存中查询到博客++++++++++++++++++++："+blog.getId());
+        }else {
+//            判断是不是空数据 解决缓存穿透问题
+            if(blogJson != null){
+                throw new CustomException(ResultCodeEnum.BLOG_NOT_EXIST_ERROR);
+            }
+
+//        4、未命中， 去查询数据库
+            blog = blogMapper.selectById(id);
+//        5、数据库不存在 返回错误
+            if(blog == null){
+//                如果为空 就缓存空数据
+                stringRedisTemplate.opsForValue().set(key,"",RedisConstants.CACHE_NULL_TTL,TimeUnit.MINUTES);
+                throw new CustomException(ResultCodeEnum.BLOG_NOT_EXIST_ERROR);
+            }
+//        6、数据库存在 写缓存 并返回
+            stringRedisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(blog), RedisConstants.CACHE_BLOG_TTL,TimeUnit.MINUTES);
+            log.info("在shujuku中查询到博客++++++++++++++++++++："+blog.getId());
+        }
+        return blog;
+    }
+
+    /**
+     * 尝试获取锁
+     * @param key
+     * @return
+     */
+    private boolean tryLock(String key){
+        Boolean aBoolean = stringRedisTemplate.opsForValue().setIfAbsent(key, "1", 10, TimeUnit.SECONDS);
+        return BooleanUtil.isTrue(aBoolean);
+
+    }
+
+    /**
+     * 释放锁
+     * @param key
+     */
+    private void unLock(String key){
+        stringRedisTemplate.delete(key);
+    }
+
+
+    /**
      * 查询所有
      */
     public List<Blog> selectAll(Blog blog) {
@@ -196,7 +296,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
 
     public Set<Blog> selectRecommend(Integer blogId) {
-        Blog blog = this.selectById(blogId);
+        Blog blog = blogMapper.selectById(blogId);
         String tags = blog.getTags();
         Set<Blog> blogSet = new HashSet<>();
         if (ObjectUtil.isNotEmpty(tags)) {

@@ -77,8 +77,8 @@
         <div class="card">
           <div style="display: flex; grid-gap: 10px; ">
             <div style="flex: 1; line-height: 25px">
-              找对属于你的学习圈子
-              扫码学习精品项目
+              加入代码研习社
+              学习精品项目
             </div>
             <img src="@/assets/imgs/广告.png" alt="" style="width: 50px; height: 50px; border-radius: 5px">
           </div>

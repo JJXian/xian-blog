@@ -2,6 +2,8 @@ package com.xian.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xian.common.result.Result;
+import com.xian.model.role.dtos.LoginDTO;
+import com.xian.model.role.dtos.RegisterDTO;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.role.pojo.User;
 import com.github.pagehelper.PageInfo;
@@ -25,9 +27,10 @@ public interface UserService extends IService<User> {
 
     Result updateByUser(User user);
 
-    Account login(Account account);
+//    Account login(Account account);
+    Result login(LoginDTO loginDTO);
 
-    void register(Account account);
+    Result register(RegisterDTO registerDTO);
 
     void updatePassword(Account account);
 

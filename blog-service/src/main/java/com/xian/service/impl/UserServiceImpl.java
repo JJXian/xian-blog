@@ -6,6 +6,8 @@ import com.xian.common.constants.commonConstants;
 import com.xian.common.result.Result;
 import com.xian.common.regex.RegexUtils;
 import com.xian.common.enums.ResultCodeEnum;
+import com.xian.model.role.dtos.LoginDTO;
+import com.xian.model.role.dtos.RegisterDTO;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.role.pojo.User;
 import com.xian.common.enums.RoleEnum;
@@ -124,58 +126,61 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         return PageInfo.of(list);
     }
 
-
-
-    /**
-     * 登录
-     */
-    public Account login(Account account) {
-        Account dbUser = userMapper.selectByUsername(account.getUsername());
-        if (ObjectUtil.isNull(dbUser)) {
-//            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
-            throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
-        }
-        String password = account.getPassword();
-        password = DigestUtils.md5DigestAsHex(password.getBytes());
-        if (!password.equals(dbUser.getPassword())) {
-            throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
-        }
-
-//        if (!account.getPassword().equals(dbUser.getPassword())) {
-//            throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
-//        }
-        // 生成token
-        String tokenData = dbUser.getId() + "-" + RoleEnum.USER.name();
-        String token = TokenUtils.createToken(tokenData, dbUser.getPassword());
-        dbUser.setToken(token);
-        return dbUser;
-    }
-
 //    public Account login(Account account) {
 //        Account dbUser = userMapper.selectByUsername(account.getUsername());
 //        if (ObjectUtil.isNull(dbUser)) {
-//            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
+////            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
+//            throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
 //        }
-//        if (!account.getPassword().equals(dbUser.getPassword())) {
+//        String password = account.getPassword();
+//        password = DigestUtils.md5DigestAsHex(password.getBytes());
+//        if (!password.equals(dbUser.getPassword())) {
 //            throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
 //        }
+//
+////        if (!account.getPassword().equals(dbUser.getPassword())) {
+////            throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
+////        }
 //        // 生成token
 //        String tokenData = dbUser.getId() + "-" + RoleEnum.USER.name();
 //        String token = TokenUtils.createToken(tokenData, dbUser.getPassword());
 //        dbUser.setToken(token);
 //        return dbUser;
 //    }
+    /**
+     * 登录
+     */
+    public Result login(LoginDTO loginDTO) {
+        Account dbUser = userMapper.selectByUsername(loginDTO.getUsername());
+        if (ObjectUtil.isNull(dbUser)) {
+//            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
+            throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
+        }
+//        对密码进行md5加密
+        String password = loginDTO.getPassword();
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
+        if (!password.equals(dbUser.getPassword())) {
+            throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
+        }
+        // 生成token
+        String tokenData = dbUser.getId() + "-" + RoleEnum.USER.name();
+        String token = TokenUtils.createToken(tokenData, dbUser.getPassword());
+        dbUser.setToken(token);
+        return Result.success(dbUser);
+    }
 
     /**
      * 注册
      */
-    public void register(Account account) {
+    public Result register(RegisterDTO registerDTO) {
         User user = new User();
-        BeanUtils.copyProperties(account, user);
-        String password = account.getPassword();
+        BeanUtils.copyProperties(registerDTO, user);
+        String password = registerDTO.getPassword();
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         user.setPassword(password);
+        user.setAvatar(commonConstants.USER_DEFAULT_AVATAR);
         this.add(user);
+        return  Result.success();
     }
 
     /**
@@ -196,11 +201,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         String newPassword = account.getNewPassword();
         newPassword = DigestUtils.md5DigestAsHex(newPassword.getBytes());
         dbUser.setPassword(newPassword);
-
-//        if (!account.getPassword().equals(dbUser.getPassword())) {
-//            throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
-//        }
-//        dbUser.setPassword(account.getNewPassword());
         userMapper.updateById(dbUser);
     }
 
