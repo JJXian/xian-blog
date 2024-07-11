@@ -122,6 +122,8 @@ export default {
     setLikes() {
       this.$request.post('/likes/set', {  fid: this.blogId, module: '博客' }).then(res => {
         if (res.code === '200') {
+          // 关闭所有已存在的消息
+          this.$message.closeAll();
           this.$message.success('操作成功')
           this.load()  // 重新加载数据
         }
@@ -130,8 +132,9 @@ export default {
     setCollect() {
       this.$request.post('/collect/set', {  fid: this.blogId, module: '博客' }).then(res => {
         if (res.code === '200') {
+          // 关闭所有已存在的消息
+          this.$message.closeAll();
           this.$message.success('操作成功')
-
           this.load()  // 重新加载数据
         }
       })

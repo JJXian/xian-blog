@@ -18,6 +18,7 @@ public enum ResultCodeEnum {
     PHONE_SYTLE_ERROR("5007","手机号格式不正确"),
     EMAIL_SYTLE_ERROR("5008","邮箱格式不正确"),
     BLOG_NOT_EXIST_ERROR("5009","博客不存在")
+
     ;
 
     public String code;

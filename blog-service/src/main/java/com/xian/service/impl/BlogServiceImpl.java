@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xian.common.constants.RedisConstants;
 import com.xian.common.enums.ResultCodeEnum;
 import com.xian.common.exception.CustomException;
-import com.xian.common.result.Result;
+import com.xian.common.redis.utils.RedisCache;
 import com.xian.model.behavior.pojo.Collect;
 import com.xian.model.behavior.pojo.Likes;
 import com.xian.model.blog.pojo.Blog;
@@ -59,6 +59,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    private RedisCache redisCache;
+
     /**
      * 新增
      */
@@ -75,6 +78,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
      * 删除
      */
     public void deleteById(Integer id) {
+        // TODO 同时删除点赞和收藏数据 不然会出错
         blogMapper.deleteById(id);
     }
 
@@ -111,13 +115,17 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     public Blog selectById(Integer id) {
 //      缓存穿透
 //        Blog blog = queryWithPassThrough(id);
+//        调用工具类解决缓存穿透
+//        Blog blog= redisCache.getWithPassThrough(RedisConstants.CACHE_BLOG_KEY,id,Blog.class,this::getById,RedisConstants.CACHE_BLOG_TTL,TimeUnit.SECONDS);
 
 //        互斥锁解决缓存击穿
         Blog blog = queryWithMutex(id);
+//        Blog blog = redisCache.getWithMutex(RedisConstants.CACHE_BLOG_KEY,id,Blog.class,this::selectById,20L,TimeUnit.SECONDS);
+//        Blog blog = redisCache.getWithLogicalExpire(RedisConstants.CACHE_BLOG_KEY,id,Blog.class,this::selectById,20L,TimeUnit.SECONDS);
+
         if(blog == null){
             return null;
         }
-
 //        设置博客其他信息
         User user = userService.selectById(blog.getUserId());
 
@@ -184,7 +192,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
                 if(!isLock){
 //            失败则休眠并重试
                     Thread.sleep(50);
-                    queryWithMutex(id);
+//                    queryWithMutex(id);
                 }
 //        4、未命中， 去查询数据库
                 blog = blogMapper.selectById(id);

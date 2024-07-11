@@ -99,6 +99,8 @@ export default {
       // 保存当前的用户信息到数据库
       this.$request.put('/user/update', this.user).then(res => {
         if (res.code === '200') {
+          // 关闭所有已存在的消息
+          this.$message.closeAll();
           // 成功更新
           this.$message.success('保存成功')
           // 更新浏览器缓存里的用户信息

@@ -17,6 +17,22 @@ spring:
     host: 47.98.43.176
     password: jjxian
     port: 6379
+#  邮件推送
+  mail:
+    host: smtp.qq.com # 此处使用的是qq邮箱进行邮件发送
+    protocol: smtp
+    username: 2451999059@qq.com
+    password: hserudvmqgejdiia
+    default-encoding: UTF-8 #编码风格
+
+    nickname: 技术研习中心
+    properties:
+      mail.smtp.auth: true #启用SMTP服务器的身份验证，这是为了确保只有合法用户可以发送邮件。
+      mail.smtp.starttls.enable: #启用TLS加密，这是为了确保邮件传输的安全性。
+      mail.smtp.starttls.required: true #要求使用TLS加密，如果连接不是通过TLS加密传输，则连接将失败。
+
+
+
 
 ## 配置mybatis实体和xml映射
 #mybatis:

@@ -13,6 +13,7 @@ import com.xian.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 
 /**
  * 基础前端接口
@@ -86,6 +87,7 @@ public class WebController {
 //        }
 //        return Result.success();
     }
+
 
     /**
      * 修改密码

@@ -12,6 +12,31 @@
         <el-form-item prop="confirmPass">
           <el-input size="medium" prefix-icon="el-icon-lock" placeholder="请确认密码" show-password  v-model="form.confirmPass"></el-input>
         </el-form-item>
+<!--        邮箱验证登陆-->
+<!--        <el-form-item prop="email">-->
+<!--          <el-input size="medium" prefix-icon="el-icon-user" placeholder="请输入邮箱" v-model="form.email"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item>-->
+<!--          <el-button size="medium" @click="sendVerificationCode">发送验证码</el-button>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item prop="mailVerify">-->
+<!--          <el-input size="medium" prefix-icon="el-icon-message" placeholder="请输入验证码" v-model="form.mailVerify"></el-input>-->
+<!--        </el-form-item>-->
+        <el-form-item prop="email">
+          <el-input size="medium" prefix-icon="el-icon-user" placeholder="请输入邮箱" v-model="form.email"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-row :gutter="20">
+            <el-col :span="14">
+              <el-input size="medium" prefix-icon="el-icon-message" placeholder="请输入验证码" v-model="form.mailVerify"></el-input>
+            </el-col>
+            <el-col :span="10">
+              <el-button size="medium" @click="sendVerificationCode" style="width: 100%">发送验证码</el-button>
+            </el-col>
+          </el-row>
+        </el-form-item>
+
         <el-form-item>
           <el-button size="medium" style="width: 100%; background-color: #2a60c9; border-color: #2a60c9; color: white" @click="register">注 册</el-button>
         </el-form-item>
@@ -51,6 +76,13 @@ export default {
         ],
         confirmPass: [
           { validator: validatePassword, trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
+        ],
+        mailVerify: [
+          { required: true, message: '请输入验证码', trigger: 'blur' }
         ]
       }
     }
@@ -59,6 +91,19 @@ export default {
 
   },
   methods: {
+    sendVerificationCode() {
+      if (!this.form.email) {
+        this.$message.error('请输入邮箱地址');
+        return;
+      }
+      this.$request.post('/send/mail', { email: this.form.email }).then(res => {
+        if (res.code === '200') {
+          this.$message.success('验证码已发送至邮箱');
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
     register() {
       this.$refs['formRef'].validate((valid) => {
         if (valid) {

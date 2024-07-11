@@ -50,7 +50,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
             throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
         }
         if (ObjectUtil.isEmpty(admin.getPassword())) {
-            admin.setPassword(commonConstants.USER_DEFAULT_PASSWORD);
+            String password =  DigestUtils.md5DigestAsHex(commonConstants.USER_DEFAULT_PASSWORD.getBytes());
+            admin.setPassword(password);
         }
         if (ObjectUtil.isEmpty(admin.getName())) {
             admin.setName(admin.getUsername());
@@ -64,6 +65,9 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
         String email = admin.getEmail();
         if(!emailRight(email)){
             return Result.error(ResultCodeEnum.EMAIL_SYTLE_ERROR);
+        }
+        if( admin.getAvatar() == null ||admin.getAvatar().isEmpty() ){
+            admin.setAvatar(commonConstants.USER_DEFAULT_AVATAR);
         }
 
         admin.setRole(RoleEnum.ADMIN.name());

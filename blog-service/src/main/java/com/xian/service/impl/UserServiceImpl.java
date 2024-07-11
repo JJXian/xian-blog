@@ -2,6 +2,7 @@ package com.xian.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xian.common.constants.RedisConstants;
 import com.xian.common.constants.commonConstants;
 import com.xian.common.result.Result;
 import com.xian.common.regex.RegexUtils;
@@ -18,6 +19,8 @@ import com.xian.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -29,6 +32,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 
     @Resource
     private UserMapper userMapper;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     public Result add(User user) {
         // 业务方法
@@ -175,6 +181,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     public Result register(RegisterDTO registerDTO) {
         User user = new User();
         BeanUtils.copyProperties(registerDTO, user);
+
+        String email = registerDTO.getEmail();
+        String emailKey = RedisConstants.REGISTER_MAIL_CODE_KEY+email;
+        String emailCode = (String) stringRedisTemplate.opsForValue().get(emailKey);
+
+        if(!emailCode.equals(registerDTO.getMailVerify())){
+            return Result.error("5001","验证码错误");
+        }
+
+//        设置默认密码和头像
         String password = registerDTO.getPassword();
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         user.setPassword(password);
@@ -182,6 +198,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         this.add(user);
         return  Result.success();
     }
+
+    /**
+     * 验证邮箱
+     * @param email
+     * @return
+     */
+    public Result EmailVerify(String email) {
+        // 1.校验邮箱
+        if (!RegexUtils.isEmailInvalid(email)) {
+            // 1.2.如果不符合，返回错误信息
+            return Result.error(ResultCodeEnum.EMAIL_SYTLE_ERROR);
+        }
+        // 2.检查上一次发送时间，此处并未记录真实发送时间，仅通过验证码的ttl来判断
+        String key = RedisConstants.REGISTER_MAIL_CODE_KEY + email;
+        int sendCodeInterval = 60;
+        Long keyExpire = stringRedisTemplate.getExpire(key);
+//        log.debug("check REGISTER_MAIL_CODE_TTL,{}", keyExpire);
+        if (keyExpire != null && RedisConstants.REGISTER_MAIL_CODE_TTL - keyExpire < sendCodeInterval) {
+            // 2.1不合符，拒绝发送
+            return Result.error("5001","发送频繁");
+        }
+        // 3.检查邮箱是否已经被注册
+        if(userMapper.selectByEmail(email) != null){
+            return Result.error("5001","该邮箱已经被注册了！");
+        }
+        return Result.success();
+    }
+
+
 
     /**
      * 修改密码
@@ -203,5 +248,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         dbUser.setPassword(newPassword);
         userMapper.updateById(dbUser);
     }
+
+
 
 }

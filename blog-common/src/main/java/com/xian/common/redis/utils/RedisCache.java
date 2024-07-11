@@ -95,6 +95,7 @@ public class RedisCache {
 
         // 4.缓存不存在也不为空对象，则根据id查询数据库
         R r = dbFallback.apply(id);
+
         // 5.数据库不存在
         if (r == null) {
             // 将空值写入redis
@@ -136,7 +137,7 @@ public class RedisCache {
         LocalDateTime expireTime = redisData.getExpireTime();
         // 5.判断是否过期
         if (expireTime.isAfter(LocalDateTime.now())) {
-            // 5.1.未过期，直接返回店铺信息
+            // 5.1.未过期，直接返回信息
             return r;
         }
         // 5.2.已过期，需要缓存重建
@@ -185,6 +186,7 @@ public class RedisCache {
         String shopJson = stringRedisTemplate.opsForValue().get(key);
         // 2.判断是否存在
         if (StrUtil.isNotBlank(shopJson)) {
+            log.info("缓存redis中查询到"+id);
             // 3.存在，直接返回
             return JSONUtil.toBean(shopJson, type);
         }
@@ -208,6 +210,7 @@ public class RedisCache {
             }
             // 4.4.获取锁成功，根据id查询数据库
             r = dbFallback.apply(id);
+            log.info("数据库查询到"+ id);
             // 5.不存在，返回空值
             if (r == null) {
                 // 将空值写入redis
