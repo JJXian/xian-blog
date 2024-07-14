@@ -99,8 +99,16 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
     /**
      * 删除
      */
-    public void deleteById(Integer id) {
+    public Result deleteById(Integer id) {
+        QueryWrapper<Admin> wrapper = new QueryWrapper<Admin>()
+                .select("*")
+                .eq("id",id);
+        Admin admin = adminMapper.selectOne(wrapper);
+        if(admin.getUsername().equals("admin")){
+            return Result.error("5001","权限不足,请联系超级管理员！");
+        }
         adminMapper.deleteById(id);
+        return Result.success();
     }
 
     /**

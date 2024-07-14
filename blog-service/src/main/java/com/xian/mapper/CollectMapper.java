@@ -2,6 +2,7 @@ package com.xian.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xian.model.behavior.pojo.Collect;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,4 +16,5 @@ public interface CollectMapper extends BaseMapper<Collect> {
 //    void deleteById(Integer id);
 
     int selectByFidAndModule(@Param("fid") Integer fid, @Param("module") String module);
+
 }

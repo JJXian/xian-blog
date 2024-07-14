@@ -1,5 +1,6 @@
 package com.xian.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.behavior.pojo.Collect;
@@ -43,5 +44,14 @@ public class CollectServiceImpl extends ServiceImpl<CollectMapper,Collect> imple
         return collectMapper.selectByFidAndModule(fid, module);
     }
 
+    /**
+     * 删除博客的所有收藏信息
+     * @param fid 关联的博客/活动id
+     */
+    public void deleteAllBlogCollect(Integer fid){
+        QueryWrapper<Collect> wrapper = new QueryWrapper<>();
+        wrapper.eq("fid",fid);
+        collectMapper.delete(wrapper);
+    }
 
 }

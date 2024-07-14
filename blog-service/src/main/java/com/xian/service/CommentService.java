@@ -24,4 +24,6 @@ public interface CommentService extends IService<Comment> {
     PageInfo<Comment> selectPage(Comment comment, Integer pageNum, Integer pageSize);
 
     Integer selectCount(Integer fid, String module);
+
+    void deleteAllBlogComment(Integer fid);
 }

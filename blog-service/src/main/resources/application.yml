@@ -30,8 +30,14 @@ spring:
       mail.smtp.auth: true #启用SMTP服务器的身份验证，这是为了确保只有合法用户可以发送邮件。
       mail.smtp.starttls.enable: #启用TLS加密，这是为了确保邮件传输的安全性。
       mail.smtp.starttls.required: true #要求使用TLS加密，如果连接不是通过TLS加密传输，则连接将失败。
-
-
+#上线加上以下信息，阿里云禁止25端口
+#      mail:
+#        smtp:
+#          ssl:
+#            enable: true
+#          socketFactory:
+#            port: 465
+#            class: javax.net.ssl.SSLSocketFactory
 
 
 ## 配置mybatis实体和xml映射

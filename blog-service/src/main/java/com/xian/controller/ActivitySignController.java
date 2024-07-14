@@ -27,8 +27,7 @@ public class ActivitySignController {
      */
     @DeleteMapping("/delete/{id}")
     public Result deleteById(@PathVariable Integer id) {
-//        activitySignService.deleteById(id);
-        activitySignService.removeById(id);
+        activitySignService.deleteById(id);
         return Result.success();
     }
 

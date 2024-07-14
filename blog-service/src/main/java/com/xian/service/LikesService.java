@@ -10,4 +10,6 @@ public interface LikesService extends IService<Likes> {
     int selectByFidAndModule(Integer id, String value);
 
     Likes selectUserLikes(Integer id, String value);
+
+    void deleteAllBlogLikes(Integer id);
 }

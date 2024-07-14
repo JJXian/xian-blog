@@ -13,7 +13,7 @@ import java.util.List;
 public interface AdminService extends IService<Admin>{
     Result add(Admin admin);
 
-    void deleteById(Integer id);
+    Result deleteById(Integer id);
 
     void deleteBatch(List<Integer> ids);
 

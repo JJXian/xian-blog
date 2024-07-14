@@ -35,9 +35,9 @@ public class AdminController {
      */
     @DeleteMapping("/delete/{id}")
     public Result deleteById(@PathVariable Integer id) {
-//        adminService.deleteById(id);
-        adminService.removeById(id);
-        return Result.success();
+
+//        adminService.removeById(id);
+        return adminService.deleteById(id);
     }
 
     /**

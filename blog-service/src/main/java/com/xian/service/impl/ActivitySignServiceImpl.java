@@ -1,6 +1,7 @@
 package com.xian.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.activity.pojo.ActivitySign;
@@ -43,8 +44,22 @@ public class ActivitySignServiceImpl  extends ServiceImpl<ActivitySignMapper,Act
         return PageInfo.of(list);
     }
 
+    /**
+     * 根据id删除报名信息
+     * @param id
+     */
     public void deleteById(Integer id) {
         activitySignMapper.deleteById(id);
+    }
+
+    /**
+     * 删除活动的时候同时删除所有的报名信息
+     * @param id
+     */
+    public void deleteAllSign(Integer id){
+        QueryWrapper<ActivitySign> wrapper = new QueryWrapper<>();
+        wrapper.eq("activity_id",id);
+        activitySignMapper.delete(wrapper);
     }
 
     public void deleteBatch(List<Integer> ids) {

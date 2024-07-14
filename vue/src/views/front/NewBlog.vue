@@ -115,6 +115,8 @@ export default {
             data: this.form
           }).then(res => {
             if (res.code === '200') {  // 表示成功保存
+              // 关闭所有已存在的消息
+              this.$message.closeAll()
               this.$message.success('保存成功')
             } else {
               // 表单验证失败，不执行保存操作，显示验证提示信息

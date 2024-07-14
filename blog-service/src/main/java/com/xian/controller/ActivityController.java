@@ -33,8 +33,7 @@ public class ActivityController {
      */
     @DeleteMapping("/delete/{id}")
     public Result deleteById(@PathVariable Integer id) {
-//        activityService.deleteById(id);
-        activityService.removeById(id);
+        activityService.deleteById(id);
         return Result.success();
     }
 

@@ -75,14 +75,14 @@ public class MailServiceImpl implements MailService {
         message.setTo(email);
 
         // 设置邮件主题
-        message.setSubject("欢迎注册技术研习中心");
+        message.setSubject("欢迎注册技术研习博客");
 
         //生成六位随机数
         String code = RandomUtil.randomNumbers(6);
 
         //将验证码存入redis，有效期为5分钟
         stringRedisTemplate.opsForValue().set(RedisConstants.REGISTER_MAIL_CODE_KEY +email, code,RedisConstants.REGISTER_MAIL_CODE_TTL , TimeUnit.SECONDS);
-        message.setText("【验证码】亲爱的用户：\n" + "你正在注册技术研习中心，你的邮箱验证码为：" + code + "，此验证码有效时长5分钟，请勿转发他人。");
+        message.setText("【验证码】亲爱的用户：\n" + "你正在注册技术研习博客，你的邮箱验证码为：" + code + "，此验证码有效时长5分钟，请勿转发他人。");
 
         // 发送邮件
         mailSender.send(message);

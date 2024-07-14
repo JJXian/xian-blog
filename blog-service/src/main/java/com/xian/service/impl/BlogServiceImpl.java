@@ -20,6 +20,9 @@ import com.xian.mapper.BlogMapper;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.role.pojo.User;
 import com.xian.service.BlogService;
+import com.xian.service.CollectService;
+import com.xian.service.CommentService;
+import com.xian.service.LikesService;
 import com.xian.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -51,13 +54,16 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     private UserServiceImpl userService;
 
     @Resource
-    private LikesServiceImpl likesService;
+    private LikesService likesService;
 
     @Resource
-    private CollectServiceImpl collectService;
+    private CollectService collectService;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private CommentService commentService;
 
     @Autowired
     private RedisCache redisCache;
@@ -78,7 +84,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
      * 删除
      */
     public void deleteById(Integer id) {
-        // TODO 同时删除点赞和收藏数据 不然会出错
+        // 删除博客的点赞数据
+        likesService.deleteAllBlogLikes(id);
+//        删除博客的收藏数据
+        collectService.deleteAllBlogCollect(id);
+//      删除评论数据
+        commentService.deleteAllBlogComment(id);
         blogMapper.deleteById(id);
     }
 

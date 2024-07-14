@@ -186,6 +186,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         String emailKey = RedisConstants.REGISTER_MAIL_CODE_KEY+email;
         String emailCode = (String) stringRedisTemplate.opsForValue().get(emailKey);
 
+        if(registerDTO.getMailVerify() == null ){
+            return Result.error("5001","请输入验证码！");
+        }
         if(!emailCode.equals(registerDTO.getMailVerify())){
             return Result.error("5001","验证码错误");
         }

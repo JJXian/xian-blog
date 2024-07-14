@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div style="width: 380px; padding: 50px 30px; background-color: rgba(255,255,255,.8); border-radius: 5px;">
-      <div style="text-align: center; font-size: 24px; margin-bottom: 30px; color: #333">欢迎注册技术研习中心</div>
+      <div style="text-align: center; font-size: 24px; margin-bottom: 30px; color: #333">欢迎注册技术研习博客</div>
       <el-form :model="form" :rules="rules" ref="formRef">
         <el-form-item prop="username">
           <el-input size="medium" prefix-icon="el-icon-user" placeholder="请输入账号" v-model="form.username"></el-input>
@@ -13,17 +13,8 @@
           <el-input size="medium" prefix-icon="el-icon-lock" placeholder="请确认密码" show-password  v-model="form.confirmPass"></el-input>
         </el-form-item>
 <!--        邮箱验证登陆-->
-<!--        <el-form-item prop="email">-->
-<!--          <el-input size="medium" prefix-icon="el-icon-user" placeholder="请输入邮箱" v-model="form.email"></el-input>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item>-->
-<!--          <el-button size="medium" @click="sendVerificationCode">发送验证码</el-button>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item prop="mailVerify">-->
-<!--          <el-input size="medium" prefix-icon="el-icon-message" placeholder="请输入验证码" v-model="form.mailVerify"></el-input>-->
-<!--        </el-form-item>-->
         <el-form-item prop="email">
-          <el-input size="medium" prefix-icon="el-icon-user" placeholder="请输入邮箱" v-model="form.email"></el-input>
+          <el-input size="medium" prefix-icon="el-icon-message" placeholder="请输入邮箱" v-model="form.email"></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -100,6 +91,7 @@ export default {
         if (res.code === '200') {
           this.$message.success('验证码已发送至邮箱');
         } else {
+          this.$message.closeAll();
           this.$message.error(res.msg);
         }
       });
@@ -111,9 +103,9 @@ export default {
           this.$request.post('/register', this.form).then(res => {
             if (res.code === '200') {
               this.$router.push('/login')  // 跳转登录页面
-              this.$message.success('注册成功')
+              this.$message.success('注册成功');
             } else {
-              this.$message.error(res.msg)
+              this.$message.error(res.msg);
             }
           })
         }

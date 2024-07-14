@@ -1,6 +1,7 @@
 package com.xian.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.behavior.pojo.Comment;
@@ -11,6 +12,7 @@ import com.xian.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -47,6 +49,19 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper,Comment> imple
      */
     public void deleteById(Integer id) {
         commentMapper.deleteById(id);
+    }
+
+    /**
+     * 删除博客要删除所有评论
+     * @param fid
+     */
+    @Override
+    @Transactional
+    public void deleteAllBlogComment(Integer fid) {
+//        commentMapper.deleteByFid(fid);
+        QueryWrapper<Comment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("fid", fid);
+        commentMapper.delete(queryWrapper);
     }
 
     /**
@@ -106,5 +121,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper,Comment> imple
     public Integer selectCount(Integer fid, String module) {
         return commentMapper.selectCount(fid, module);
     }
+
+
 
 }

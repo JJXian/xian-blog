@@ -1,8 +1,10 @@
 package com.xian.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xian.common.result.Result;
+import com.xian.mapper.ActivitySignMapper;
 import com.xian.model.activity.pojo.Activity;
 import com.xian.model.activity.pojo.ActivitySign;
 import com.xian.model.behavior.pojo.Collect;
@@ -12,10 +14,13 @@ import com.xian.common.enums.RoleEnum;
 import com.xian.mapper.ActivityMapper;
 import com.xian.model.role.pojo.Account;
 import com.xian.service.ActivityService;
+import com.xian.service.CommentService;
 import com.xian.service.LikesService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xian.utils.TokenUtils;
+import org.checkerframework.checker.fenum.qual.AwtAlphaCompositingRule;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,13 +38,16 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
     private ActivityMapper activityMapper;
 
     @Resource
-    ActivitySignServiceImpl activitySignService;
+    private ActivitySignServiceImpl activitySignService;
 
     @Resource
-    LikesService likesService;
+    private LikesService likesService;
 
-    @Resource
-    CollectServiceImpl collectService;
+    @Autowired
+    private CollectServiceImpl collectService;
+
+    @Autowired
+    private CommentService commentService;
 
     /**
      * 新增
@@ -52,6 +60,12 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
      * 删除
      */
     public void deleteById(Integer id) {
+//      删除活动相关的点赞和评论和收藏
+        likesService.deleteAllBlogLikes(id);
+        collectService.deleteAllBlogCollect(id);
+        commentService.deleteAllBlogComment(id);
+//        同时删除报名信息
+        activitySignService.deleteAllSign(id);
         activityMapper.deleteById(id);
     }
 

@@ -16,4 +16,7 @@ public interface ActivitySignService extends IService<ActivitySign> {
     void deleteBatch(List<Integer> ids);
 
     PageInfo<ActivitySign> selectPage(ActivitySign activitySign, Integer pageNum, Integer pageSize);
+
+    void deleteAllSign(Integer id);
+
 }
