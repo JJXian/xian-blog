@@ -1,10 +1,8 @@
 package com.xian.service.impl;
 
 import cn.hutool.core.date.DateUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xian.common.result.Result;
-import com.xian.mapper.ActivitySignMapper;
 import com.xian.model.activity.pojo.Activity;
 import com.xian.model.activity.pojo.ActivitySign;
 import com.xian.model.behavior.pojo.Collect;
@@ -19,7 +17,6 @@ import com.xian.service.LikesService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xian.utils.TokenUtils;
-import org.checkerframework.checker.fenum.qual.AwtAlphaCompositingRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

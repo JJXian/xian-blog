@@ -85,7 +85,7 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <!--            <version>2.2.0</version>-->
         </dependency>
-<!--&lt;!&ndash;        Spring-security&ndash;&gt;-->
+<!--        Spring-security-->
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->
 <!--            <artifactId>spring-boot-starter-security</artifactId>-->
@@ -109,7 +109,6 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>

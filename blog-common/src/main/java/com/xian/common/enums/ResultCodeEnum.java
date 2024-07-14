@@ -7,6 +7,8 @@ public enum ResultCodeEnum {
     TOKEN_INVALID_ERROR("401", "无效的token"),
     TOKEN_CHECK_ERROR("401", "token验证失败，请重新登录"),
     PARAM_LOST_ERROR("4001", "参数缺失"),
+    ACCOUNT_NOT_ALLOW("4003","体验账号，禁止操作"),
+
 
     SYSTEM_ERROR("500", "系统异常"),
     USER_EXIST_ERROR("5001", "用户名已存在"),

@@ -142,7 +142,14 @@ export default {
       fromVisible: false,
       form: {},
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
-      rules: {},
+      rules: {
+        title: [
+          {required: true, message: '请输入标题', trigger: 'blur'},
+        ],
+        descr: [
+          {required: true, message: '请输入博客简介',trigger: 'blur'},
+        ],
+      },
       ids: [],
       categoryList: [],
       tagsArr: [],

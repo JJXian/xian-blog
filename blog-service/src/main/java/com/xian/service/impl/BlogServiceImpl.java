@@ -6,8 +6,10 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xian.common.constants.RedisConstants;
+import com.xian.common.constants.commonConstants;
 import com.xian.common.enums.ResultCodeEnum;
 import com.xian.common.exception.CustomException;
 import com.xian.common.redis.utils.RedisCache;
@@ -139,7 +141,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         }
 //        设置博客其他信息
         User user = userService.selectById(blog.getUserId());
-
+        if(user ==null){
+            user = new User();
+            user.setAvatar(commonConstants.USER_DEFAULT_AVATAR);
+            user.setUsername(commonConstants.USER_DEFAULT_USERNAME);
+            user.setName(commonConstants.USER_DEFAULT_USERNAME);
+        }
         List<Blog> userBlogList = blogMapper.selectUserBlog(user.getId());
         user.setBlogCount(userBlogList.size());
         //  当前用户收到的点赞和收藏的数据
@@ -334,6 +341,18 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
             b.setLikesCount(likesCount);
         });
         return blogSet;
+    }
+
+    /**
+     * 查询用户发布的博客
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Blog> getByUserId(Integer id) {
+        QueryWrapper<Blog> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id",id);
+        return blogMapper.selectList(wrapper);
     }
 
     public void updateReadCount(Integer blogId) {

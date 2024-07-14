@@ -7,6 +7,7 @@ import com.xian.common.constants.commonConstants;
 import com.xian.common.result.Result;
 import com.xian.common.regex.RegexUtils;
 import com.xian.common.enums.ResultCodeEnum;
+import com.xian.model.blog.pojo.Blog;
 import com.xian.model.role.dtos.LoginDTO;
 import com.xian.model.role.dtos.RegisterDTO;
 import com.xian.model.role.pojo.Account;
@@ -14,6 +15,8 @@ import com.xian.model.role.pojo.User;
 import com.xian.common.enums.RoleEnum;
 import com.xian.common.exception.CustomException;
 import com.xian.mapper.UserMapper;
+import com.xian.service.BlogService;
+import com.xian.service.LikesService;
 import com.xian.service.UserService;
 import com.xian.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
@@ -91,7 +94,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     }
 
     public void deleteById(Integer id) {
-//        TODO 根据id删除用户，判断用户是否还有博客没删除，有则不能删除
         userMapper.deleteById(id);
     }
 
@@ -160,7 +162,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         Account dbUser = userMapper.selectByUsername(loginDTO.getUsername());
         if (ObjectUtil.isNull(dbUser)) {
 //            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
-            throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
+            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
 //        对密码进行md5加密
         String password = loginDTO.getPassword();

@@ -150,6 +150,7 @@ export default {
               this.load(1)
               this.fromVisible = false
             } else {
+              this.$message.closeAll()
               this.$message.error(res.msg)  // 弹出错误的信息
             }
           })

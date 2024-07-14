@@ -35,4 +35,7 @@ public interface BlogService extends IService<Blog> {
     List<Blog> selectTop();
 
     Set<Blog> selectRecommend(Integer blogId);
+
+
+    List<Blog> getByUserId(Integer id);
 }
