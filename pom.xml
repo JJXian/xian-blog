@@ -35,7 +35,7 @@
         <hutool.version>5.8.18</hutool.version>
         <mybatisPlus.version>3.5.3.1</mybatisPlus.version>
         <fastjson.version>1.2.58</fastjson.version>
-        <fastjson.dataformat.version>2.9.9</fastjson.dataformat.version>
+        <fastjson.dataformat.version>2.11.4</fastjson.dataformat.version>
         <commons.io.version>2.6</commons.io.version>
         <lang3.version>3.5</lang3.version>
         <curator.version>4.2.0</curator.version>
