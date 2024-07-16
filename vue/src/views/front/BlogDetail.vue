@@ -171,10 +171,13 @@ code {
   display: inline-block;
   *display: inline;
   *zoom: 1;
-  background-color: #f1f1f1;
+  background-color: #2d2d2d;
+  color: #f8f8f2; /* 一般代码颜色 */
+  //background-color: #f1f1f1;
   border-radius: 3px;
   padding: 3px 5px;
   margin: 0 3px;
+
 }
 pre code {
   display: block;

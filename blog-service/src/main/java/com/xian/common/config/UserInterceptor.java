@@ -22,7 +22,7 @@ public class UserInterceptor implements HandlerInterceptor {
         Account ac =  TokenUtils.getCurrentUser();
         String username = ac.getUsername();
 
-        if ("booss".equals(username)) {
+        if ("boss".equals(username)) {
             // 允许GET请求
             if ("GET".equalsIgnoreCase(request.getMethod())) {
                 return true;

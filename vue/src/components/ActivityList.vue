@@ -4,7 +4,8 @@
       <el-col :span="span" v-for="item in tableData" :key="item.id">
         <div class="card" style="margin-bottom: 10px" @click="goDetail(item.id)">
           <img :src="item.cover" alt="" style="width: 100%; height: 150px; border-radius: 5px">
-          <div style="margin: 10px 0; font-weight: bold">{{ item.name }}</div>
+<!--          设置标题在一行显示，超出容器省略-->
+          <div  class="comment-content"> {{ item.name }}</div>
           <div style="display: flex; align-items: center">
             <div style="flex: 1; color: #666"><i class="el-icon-date"></i> {{ item.start }}</div>
             <el-button type="primary" disabled v-if="item.isEnd" key="已结束">已结束</el-button>
@@ -88,4 +89,11 @@ export default {
 
 <style scoped>
 
+.comment-content {
+  margin: 10px 0;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>

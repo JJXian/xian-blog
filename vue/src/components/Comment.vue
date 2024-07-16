@@ -113,6 +113,11 @@ export default {
       })
     },
     addComment() {
+      if (!this.commentContent.trim()) {
+        this.$message.closeAll()
+        this.$message.error('评论内容不能为空');
+        return;
+      }
       this.$request.post('/comment/add', { content: this.commentContent, fid: this.fid, module: this.module }).then(res => {
         if (res.code === '200') {
           this.$message.success('操作成功')
