@@ -3,7 +3,6 @@
         <img alt="logo" src="http://47.98.43.176:9000/xian-blog/2024/github/images/logo3.png" style=" width: 120px; height: 120px;"></a>
 </p>
 <h1 align="center" style="margin: 10px 0 20px; font-weight: bold;">xian-blog v1.0.0</h1>
-<hr />
 <h3 align="center">基于SpringBoot开发的前后端分离的博客系统</h3>
 <p align="center">
   <a href="https://img.shields.io/badge/MybatisPlus-v3.5.3-blue"><img alt="Static Badge" src="https://img.shields.io/badge/MybatisPlus-v3.5.3-blue"></a>
