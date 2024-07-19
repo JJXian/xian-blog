@@ -1,6 +1,8 @@
 package com.xian.common.config;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.xian.common.constants.commonConstants;
 import com.xian.common.enums.ResultCodeEnum;
 import com.xian.common.exception.CustomException;
 import com.xian.model.role.pojo.Account;
@@ -22,7 +24,7 @@ public class UserInterceptor implements HandlerInterceptor {
         Account ac =  TokenUtils.getCurrentUser();
         String username = ac.getUsername();
 
-        if ("boss".equals(username)) {
+        if (commonConstants.EXPERIENCE_ACCOUNT_USERNAME.equals(username)) {
             // 允许GET请求
             if ("GET".equalsIgnoreCase(request.getMethod())) {
                 return true;
