@@ -29,7 +29,12 @@ public class WebConfig implements  WebMvcConfigurer {
                 ;
 
         // 注册自定义拦截器
-        registry.addInterceptor(userInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(userInterceptor).addPathPatterns("/**")
+                .excludePathPatterns("/login")
+                .excludePathPatterns("/register")
+                .excludePathPatterns("/send/mail")
+                .excludePathPatterns("/files/**")
+                ;
 
     }
 }
