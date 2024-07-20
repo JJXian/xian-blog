@@ -1,5 +1,7 @@
 package com.xian.controller;
 
+import com.xian.common.annotation.RateLimiter;
+import com.xian.common.enums.LimitType;
 import com.xian.common.result.Result;
 
 import com.xian.model.blog.pojo.Blog;
@@ -67,6 +69,7 @@ public class BlogController {
      * 根据ID查询
      */
     @GetMapping("/selectById/{id}")
+    @RateLimiter(time = 5,count = 3,limitType = LimitType.IP)
     public Result selectById(@PathVariable Integer id) {
         Blog blog = blogService.selectById(id);
         return Result.success(blog);
