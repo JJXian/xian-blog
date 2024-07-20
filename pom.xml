@@ -28,7 +28,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <SpringBoot.version>2.5.9</SpringBoot.version>
-        <MySQL.version>8.0.19</MySQL.version>
+        <MySQL.version>8.0.28</MySQL.version>
         <mybatis.version>2.2.1</mybatis.version>
         <pagehelper.version>1.4.6</pagehelper.version>
         <jwt.version>4.3.0</jwt.version>
