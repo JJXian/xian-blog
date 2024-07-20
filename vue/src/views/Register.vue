@@ -23,7 +23,7 @@
               <el-input size="medium" prefix-icon="el-icon-message" placeholder="请输入验证码" v-model="form.mailVerify"></el-input>
             </el-col>
             <el-col :span="10">
-              <el-button size="medium" @click="sendVerificationCode" style="width: 100%">发送验证码</el-button>
+              <el-button size="medium" @click="sendVerificationCode" style="width: 100%">{{ buttonText }}</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -57,6 +57,9 @@ export default {
       }
     }
     return {
+      isButtonDisabled: false,
+      buttonText: '发送验证码',
+      countdown: 60, // 倒计时时间，单位为秒
       form: { role: 'USER' },
       rules: {
         username: [
@@ -90,11 +93,29 @@ export default {
       this.$request.post('/send/mail', { email: this.form.email }).then(res => {
         if (res.code === '200') {
           this.$message.success('验证码已发送至邮箱');
+          // 开始倒计时
+          this.startCountdown();
         } else {
           this.$message.closeAll();
           this.$message.error(res.msg);
         }
       });
+    },
+    startCountdown() {
+      this.isButtonDisabled = true;
+      this.buttonText = `${this.countdown} 秒后重试`;
+
+      const countdownInterval = setInterval(() => {
+        this.countdown--;
+        this.buttonText = `${this.countdown} 秒后重试`;
+
+        if (this.countdown === 0) {
+          clearInterval(countdownInterval);
+          this.isButtonDisabled = false;
+          this.buttonText = '发送验证码';
+          this.countdown = 60; // 重置倒计时时间
+        }
+      }, 1000);
     },
     register() {
       this.$refs['formRef'].validate((valid) => {
