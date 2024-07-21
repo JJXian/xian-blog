@@ -1,6 +1,7 @@
 package com.xian.controller;
 
 import com.xian.common.result.Result;
+import com.xian.model.role.dtos.UserDTO;
 import com.xian.model.role.pojo.User;
 import com.xian.service.UserService;
 import com.github.pagehelper.PageInfo;
@@ -17,8 +18,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/add")
-    public Result add(@RequestBody User user) {
-        return userService.add(user);
+    public Result add(@RequestBody User User) {
+        return userService.add(User);
     }
 
     /**

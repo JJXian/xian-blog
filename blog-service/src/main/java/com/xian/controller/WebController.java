@@ -34,23 +34,6 @@ public class WebController {
         return Result.success("访问成功");
     }
 
-
-//    @PostMapping("/login")
-//    public Result login(@RequestBody Account account) {
-//        if (ObjectUtil.isEmpty(account.getUsername()) || ObjectUtil.isEmpty(account.getPassword())
-//                || ObjectUtil.isEmpty(account.getRole())) {
-//            return Result.error(ResultCodeEnum.PARAM_LOST_ERROR);
-//        }
-//        if (RoleEnum.ADMIN.name().equals(account.getRole())) {
-//            account = adminService.login(account);
-//        }else if (RoleEnum.USER.name().equals(account.getRole())) {
-//            account = userService.login(account);
-//        }else{
-//            return Result.error(ResultCodeEnum.PARAM_ERROR);
-//        }
-//        return Result.success(account);
-//    }
-
     /**
      * 登录
      */

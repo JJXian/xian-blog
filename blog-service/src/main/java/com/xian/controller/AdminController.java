@@ -1,6 +1,7 @@
 package com.xian.controller;
 
 import com.xian.common.result.Result;
+import com.xian.model.role.dtos.AdminDTO;
 import com.xian.model.role.pojo.Admin;
 import com.xian.service.AdminService;
 import com.github.pagehelper.PageInfo;
@@ -25,9 +26,9 @@ public class AdminController {
      * 新增
      */
     @PostMapping("/add")
-    public Result add(@RequestBody Admin admin) {
+    public Result add(@RequestBody AdminDTO adminDTO) {
 
-        return adminService.add(admin);
+        return adminService.add(adminDTO);
     }
 
     /**
@@ -55,7 +56,6 @@ public class AdminController {
      */
     @PutMapping("/update")
     public Result updateById(@RequestBody Admin admin) {
-
         return adminService.updateAdmin(admin);
     }
 

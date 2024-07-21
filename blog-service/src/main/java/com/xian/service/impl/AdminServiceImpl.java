@@ -7,6 +7,7 @@ import com.xian.common.constants.commonConstants;
 import com.xian.common.result.Result;
 import com.xian.common.regex.RegexUtils;
 import com.xian.common.enums.ResultCodeEnum;
+import com.xian.model.role.dtos.AdminDTO;
 import com.xian.model.role.dtos.LoginDTO;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.role.pojo.Admin;
@@ -17,6 +18,9 @@ import com.xian.service.AdminService;
 import com.xian.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import javax.annotation.Resource;
@@ -35,17 +39,18 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
     /**
      * 新增
      */
-    public Result add(Admin admin) {
+    public Result add(AdminDTO adminDTO) {
 //        Admin dbAdmin = adminMapper.selectByUsername(admin.getUsername());
 //         修改为mybatis-plus
+        Admin admin = new Admin();
+        BeanUtils.copyProperties(adminDTO,admin);
+
 //        1、构建查询条件
         QueryWrapper<Admin> wrapper = new QueryWrapper<Admin>()
                 .select("*")
                 .eq("username",admin.getUsername());
         Admin dbAdmin = adminMapper.selectOne(wrapper);
-//        Admin dbAdmin =lambdaQuery()
-//                .eq(Admin::getUsername,admin.getUsername()).one();
-//        System.out.println(dbAdmin.getUsername()+"---------------------------------------------------");
+//       已存在
         if (ObjectUtil.isNotNull(dbAdmin)) {
             throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
         }

@@ -3,12 +3,13 @@ package com.xian.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.xian.common.result.Result;
+import com.xian.model.activity.dtos.ActivityDTO;
 import com.xian.model.activity.pojo.Activity;
 
 import java.util.List;
 
 public interface ActivityService extends IService<Activity> {
-    void add(Activity activity);
+    Result add(ActivityDTO activityDTO);
 
     void deleteById(Integer id);
 

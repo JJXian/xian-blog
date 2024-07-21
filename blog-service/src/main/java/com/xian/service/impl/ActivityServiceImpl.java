@@ -3,6 +3,7 @@ package com.xian.service.impl;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xian.common.result.Result;
+import com.xian.model.activity.dtos.ActivityDTO;
 import com.xian.model.activity.pojo.Activity;
 import com.xian.model.activity.pojo.ActivitySign;
 import com.xian.model.behavior.pojo.Collect;
@@ -17,6 +18,8 @@ import com.xian.service.LikesService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xian.utils.TokenUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
  * 活动业务处理
  **/
 @Service
+@Slf4j
 public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> implements ActivityService {
 
     @Resource
@@ -49,8 +53,11 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
     /**
      * 新增
      */
-    public void add(Activity activity) {
+    public Result add(ActivityDTO activityDTO) {
+        Activity activity = new Activity();
+        BeanUtils.copyProperties(activityDTO,activity);
         activityMapper.insert(activity);
+        return Result.success();
     }
 
     /**
@@ -81,8 +88,10 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper,Activity> im
      * @return
      */
     public boolean updateById(Activity activity) {
+
+        log.info(activity.getContent());
         activityMapper.updateById(activity);
-        return false;
+        return true;
     }
 
     /**

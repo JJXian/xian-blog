@@ -2,6 +2,7 @@ package com.xian.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xian.common.result.Result;
+import com.xian.model.role.dtos.AdminDTO;
 import com.xian.model.role.dtos.LoginDTO;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.role.pojo.Admin;
@@ -11,7 +12,7 @@ import java.util.List;
 
 
 public interface AdminService extends IService<Admin>{
-    Result add(Admin admin);
+    Result add(AdminDTO adminDTO);
 
     Result deleteById(Integer id);
 

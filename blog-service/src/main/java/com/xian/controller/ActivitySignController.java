@@ -1,6 +1,7 @@
 package com.xian.controller;
 
 import com.xian.common.result.Result;
+import com.xian.model.activity.dtos.ActivitySignDTO;
 import com.xian.model.activity.pojo.ActivitySign;
 import com.xian.service.ActivitySignService;
 import com.github.pagehelper.PageInfo;
@@ -17,9 +18,8 @@ public class ActivitySignController {
     ActivitySignService activitySignService;
 
     @PostMapping("/add")
-    public Result add(@RequestBody ActivitySign activitySign) {
-        activitySignService.add(activitySign);
-        return Result.success();
+    public Result add(@RequestBody ActivitySignDTO activitySignDTO) {
+        return activitySignService.add(activitySignDTO);
     }
 
     /**

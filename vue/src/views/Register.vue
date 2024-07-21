@@ -23,7 +23,8 @@
               <el-input size="medium" prefix-icon="el-icon-message" placeholder="请输入验证码" v-model="form.mailVerify"></el-input>
             </el-col>
             <el-col :span="10">
-              <el-button size="medium" @click="sendVerificationCode" style="width: 100%">{{ buttonText }}</el-button>
+<!--              <el-button :disabled="isButtonDisabled" size="medium" @click="sendVerificationCode" style="width: 100%">{{ buttonText }}</el-button>-->
+              <el-button  size="medium" @click="sendVerificationCode" style="width: 100%">{{ buttonText }}</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -92,6 +93,7 @@ export default {
       }
       this.$request.post('/send/mail', { email: this.form.email }).then(res => {
         if (res.code === '200') {
+          this.$message.closeAll();
           this.$message.success('验证码已发送至邮箱');
           // 开始倒计时
           this.startCountdown();
@@ -126,6 +128,7 @@ export default {
               this.$router.push('/login')  // 跳转登录页面
               this.$message.success('注册成功');
             } else {
+              this.$message.closeAll();
               this.$message.error(res.msg);
             }
           })

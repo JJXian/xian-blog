@@ -1,6 +1,7 @@
 package com.xian.controller;
 
 import com.xian.common.result.Result;
+import com.xian.model.activity.dtos.ActivityDTO;
 import com.xian.model.activity.pojo.Activity;
 import com.xian.service.ActivityService;
 import com.github.pagehelper.PageInfo;
@@ -23,9 +24,8 @@ public class ActivityController {
      * 新增
      */
     @PostMapping("/add")
-    public Result add(@RequestBody Activity activity) {
-        activityService.add(activity);
-        return Result.success();
+    public Result add(@RequestBody ActivityDTO activityDTO) {
+        return activityService.add(activityDTO);
     }
 
     /**
