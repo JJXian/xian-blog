@@ -3,26 +3,25 @@ package com.xian.service.impl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xian.common.constants.commonConstants;
-import com.xian.common.result.Result;
-import com.xian.common.regex.RegexUtils;
 import com.xian.common.enums.ResultCodeEnum;
+import com.xian.common.enums.RoleEnum;
+import com.xian.common.exception.CustomException;
+import com.xian.common.regex.RegexUtils;
+import com.xian.common.result.Result;
+import com.xian.mapper.AdminMapper;
 import com.xian.model.role.dtos.AdminDTO;
 import com.xian.model.role.dtos.LoginDTO;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.role.pojo.Admin;
-import com.xian.common.enums.RoleEnum;
-import com.xian.common.exception.CustomException;
-import com.xian.mapper.AdminMapper;
 import com.xian.service.AdminService;
 import com.xian.utils.TokenUtils;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -31,7 +30,7 @@ import java.util.List;
  **/
 @Service
 
-public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements AdminService {
+public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
 
     @Resource
     private AdminMapper adminMapper;
@@ -43,19 +42,19 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
 //        Admin dbAdmin = adminMapper.selectByUsername(admin.getUsername());
 //         修改为mybatis-plus
         Admin admin = new Admin();
-        BeanUtils.copyProperties(adminDTO,admin);
+        BeanUtils.copyProperties(adminDTO, admin);
 
 //        1、构建查询条件
         QueryWrapper<Admin> wrapper = new QueryWrapper<Admin>()
                 .select("*")
-                .eq("username",admin.getUsername());
+                .eq("username", admin.getUsername());
         Admin dbAdmin = adminMapper.selectOne(wrapper);
 //       已存在
         if (ObjectUtil.isNotNull(dbAdmin)) {
             throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
         }
         if (ObjectUtil.isEmpty(admin.getPassword())) {
-            String password =  DigestUtils.md5DigestAsHex(commonConstants.USER_DEFAULT_PASSWORD.getBytes());
+            String password = DigestUtils.md5DigestAsHex(commonConstants.USER_DEFAULT_PASSWORD.getBytes());
             admin.setPassword(password);
         }
         if (ObjectUtil.isEmpty(admin.getName())) {
@@ -63,15 +62,15 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
         }
 //        手机号校验
         String phone = admin.getPhone();
-        if(!phoneRight(phone)){
+        if (!phoneRight(phone)) {
             return Result.error(ResultCodeEnum.PHONE_SYTLE_ERROR);
         }
 //        邮箱校验
         String email = admin.getEmail();
-        if(!emailRight(email)){
+        if (!emailRight(email)) {
             return Result.error(ResultCodeEnum.EMAIL_SYTLE_ERROR);
         }
-        if( admin.getAvatar() == null ||admin.getAvatar().isEmpty() ){
+        if (admin.getAvatar() == null || admin.getAvatar().isEmpty()) {
             admin.setAvatar(commonConstants.USER_DEFAULT_AVATAR);
         }
 
@@ -83,8 +82,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
     /**
      * 校验手机号
      */
-    private boolean phoneRight(String phone){
-        if(phone != null && !phone.isEmpty() && !RegexUtils.isPhoneInvalid(phone)){
+    private boolean phoneRight(String phone) {
+        if (phone != null && !phone.isEmpty() && !RegexUtils.isPhoneInvalid(phone)) {
             return false;
         }
         return true;
@@ -93,8 +92,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
     /**
      * 校验email
      */
-    private boolean emailRight(String email){
-        if(email != null && !email.isEmpty() && !RegexUtils.isEmailInvalid(email)){
+    private boolean emailRight(String email) {
+        if (email != null && !email.isEmpty() && !RegexUtils.isEmailInvalid(email)) {
             return false;
         }
         return true;
@@ -107,10 +106,10 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
     public Result deleteById(Integer id) {
         QueryWrapper<Admin> wrapper = new QueryWrapper<Admin>()
                 .select("*")
-                .eq("id",id);
+                .eq("id", id);
         Admin admin = adminMapper.selectOne(wrapper);
-        if(admin.getUsername().equals("admin")){
-            return Result.error("5001","权限不足,请联系超级管理员！");
+        if (admin.getUsername().equals("admin")) {
+            return Result.error("5001", "权限不足,请联系超级管理员！");
         }
         adminMapper.deleteById(id);
         return Result.success();
@@ -131,17 +130,17 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
     public Result updateAdmin(Admin admin) {
 //        手机号校验
         String phone = admin.getPhone();
-        if(!phoneRight(phone)){
+        if (!phoneRight(phone)) {
             return Result.error(ResultCodeEnum.PHONE_SYTLE_ERROR);
         }
 //        邮箱校验
         String email = admin.getEmail();
-        if(!emailRight(email)){
+        if (!emailRight(email)) {
             return Result.error(ResultCodeEnum.EMAIL_SYTLE_ERROR);
         }
 
         int row = adminMapper.updateById(admin);
-        if(row!=0){
+        if (row != 0) {
             return Result.success();
         }
         return Result.error();
@@ -205,7 +204,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
 
         QueryWrapper<Admin> wrapper = new QueryWrapper<Admin>()
                 .select("*")
-                .eq("username",loginDTO.getUsername());
+                .eq("username", loginDTO.getUsername());
         Admin dbAdmin = adminMapper.selectOne(wrapper);
 
 
@@ -230,29 +229,16 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements 
         return Result.success(dbAdmin);
     }
 
-//    /**
-//     * 修改密码
-//     */
-//    public void updatePassword(Account account) {
-//        Admin dbAdmin = adminMapper.selectByUsername(account.getUsername());
-//        if (ObjectUtil.isNull(dbAdmin)) {
-//            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
-//        }
-//        if (!account.getPassword().equals(dbAdmin.getPassword())) {
-//            throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
-//        }
-//        dbAdmin.setPassword(account.getNewPassword());
-//        adminMapper.updateById(dbAdmin);
 //    }
+
     /**
      * 修改密码
      */
     public void updatePassword(Account account) {
-//        Admin dbAdmin = adminMapper.selectByUsername(account.getUsername());
 
         QueryWrapper<Admin> wrapper = new QueryWrapper<Admin>()
                 .select("*")
-                .eq("username",account.getUsername());
+                .eq("username", account.getUsername());
         Admin dbAdmin = adminMapper.selectOne(wrapper);
 
         if (ObjectUtil.isNull(dbAdmin)) {

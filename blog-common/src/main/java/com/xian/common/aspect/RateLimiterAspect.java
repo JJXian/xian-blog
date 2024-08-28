@@ -46,14 +46,21 @@ public class RateLimiterAspect {
         List<Object> keys = Collections.singletonList(combineKey);
         try {
             Long number = redisTemplate.execute(limitScript, keys, count, time);
-            if (number==null || number.intValue() > count) {
-                throw new CustomException("5001","访问过于频繁，请稍候再试");
+            if (number == null || number.intValue() > count) {
+                throw new CustomException("5001", "访问过于频繁，请稍候再试");
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("服务器限流异常，请稍候再试");
         }
     }
 
+    /**
+     * 方法生成Redis键，结合了注解中的基础键、请求的IP以及方法的全名，确保每个方法的限流数据是唯一的。
+     *
+     * @param rateLimiter
+     * @param point
+     * @return
+     */
     public String getCombineKey(RateLimiter rateLimiter, JoinPoint point) {
         StringBuffer stringBuffer = new StringBuffer(rateLimiter.key());
         if (rateLimiter.limitType() == LimitType.IP) {

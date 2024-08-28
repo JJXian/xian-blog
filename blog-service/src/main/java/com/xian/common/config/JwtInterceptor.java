@@ -36,7 +36,7 @@ public class JwtInterceptor implements HandlerInterceptor {
     private UserServiceImpl userService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) {
         // 1. 从http请求的header中获取token
         String token = request.getHeader(commonConstants.TOKEN);
         if (ObjectUtil.isEmpty(token)) {

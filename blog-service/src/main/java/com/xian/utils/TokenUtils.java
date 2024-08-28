@@ -5,8 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.xian.common.constants.commonConstants;
-import com.xian.model.role.pojo.Account;
 import com.xian.common.enums.RoleEnum;
+import com.xian.model.role.pojo.Account;
 import com.xian.service.AdminService;
 import com.xian.service.UserService;
 import com.xian.service.impl.AdminServiceImpl;
@@ -49,9 +49,12 @@ public class TokenUtils {
      * 生成token
      */
     public static String createToken(String data, String sign) {
-        return JWT.create().withAudience(data) // 将 userId-role 保存到 token 里面,作为载荷
-                .withExpiresAt(DateUtil.offsetHour(new Date(), 2)) // 2小时后token过期
-                .sign(Algorithm.HMAC256(sign)); // 以 password 作为 token 的密钥
+        // 将 userId-role 保存到 token 里面,作为载荷
+        return JWT.create().withAudience(data)
+                // 2小时后token过期
+                .withExpiresAt(DateUtil.offsetHour(new Date(), 2))
+                // 以 password 作为 token 的密钥
+                .sign(Algorithm.HMAC256(sign));
     }
 
     /**
@@ -63,8 +66,10 @@ public class TokenUtils {
             String token = request.getHeader(commonConstants.TOKEN);
             if (ObjectUtil.isNotEmpty(token)) {
                 String userRole = JWT.decode(token).getAudience().get(0);
-                String userId = userRole.split("-")[0];  // 获取用户id
-                String role = userRole.split("-")[1];    // 获取角色
+                // 获取用户id
+                String userId = userRole.split("-")[0];
+                // 获取角色
+                String role = userRole.split("-")[1];
                 if (RoleEnum.ADMIN.name().equals(role)) {
 //                    return staticAdminService.selectById(Integer.valueOf(userId));
                     return staticAdminService.getById(Integer.valueOf(userId));
@@ -75,7 +80,8 @@ public class TokenUtils {
         } catch (Exception e) {
             log.error("获取当前用户信息出错", e);
         }
-        return new Account();  // 返回空的账号对象
+        // 返回空的账号对象
+        return new Account();
     }
 }
 

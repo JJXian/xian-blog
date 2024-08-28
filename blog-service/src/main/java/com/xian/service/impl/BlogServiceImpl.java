@@ -8,17 +8,18 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xian.common.constants.RedisConstants;
 import com.xian.common.constants.commonConstants;
+import com.xian.common.enums.LikesModuleEnum;
 import com.xian.common.enums.ResultCodeEnum;
+import com.xian.common.enums.RoleEnum;
 import com.xian.common.exception.CustomException;
-import com.xian.common.redis.utils.RedisCache;
+import com.xian.mapper.BlogMapper;
 import com.xian.model.behavior.pojo.Collect;
 import com.xian.model.behavior.pojo.Likes;
 import com.xian.model.blog.pojo.Blog;
-import com.xian.common.enums.LikesModuleEnum;
-import com.xian.common.enums.RoleEnum;
-import com.xian.mapper.BlogMapper;
 import com.xian.model.role.pojo.Account;
 import com.xian.model.role.pojo.User;
 import com.xian.service.BlogService;
@@ -26,12 +27,9 @@ import com.xian.service.CollectService;
 import com.xian.service.CommentService;
 import com.xian.service.LikesService;
 import com.xian.utils.TokenUtils;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.convert.RedisData;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,8 +65,6 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     @Autowired
     private CommentService commentService;
 
-    @Autowired
-    private RedisCache redisCache;
 
     /**
      * 新增
@@ -107,18 +103,19 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     /**
      * 更新
      * 更新数据库和更新缓存同时完成，添加事务注解开启事务
+     *
      * @return
      */
     @Transactional
     public boolean updateById(Blog blog) {
         Integer id = blog.getId();
-        if(id == null){
-            throw new CustomException("300","id不能为空");
+        if (id == null) {
+            throw new CustomException("300", "id不能为空");
         }
 //        1、更新数据库
         blogMapper.updateById(blog);
 //        2、 删除缓存
-         stringRedisTemplate.delete(RedisConstants.CACHE_BLOG_KEY+id);
+        stringRedisTemplate.delete(RedisConstants.CACHE_BLOG_KEY + id);
         return true;
     }
 
@@ -136,12 +133,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 //        Blog blog = redisCache.getWithMutex(RedisConstants.CACHE_BLOG_KEY,id,Blog.class,this::selectById,20L,TimeUnit.SECONDS);
 //        Blog blog = redisCache.getWithLogicalExpire(RedisConstants.CACHE_BLOG_KEY,id,Blog.class,this::selectById,20L,TimeUnit.SECONDS);
 
-        if(blog == null){
+        if (blog == null) {
             return null;
         }
 //        设置博客其他信息
         User user = userService.selectById(blog.getUserId());
-        if(user ==null){
+        if (user == null) {
             user = new User();
             user.setAvatar(commonConstants.USER_DEFAULT_AVATAR);
             user.setUsername(commonConstants.USER_DEFAULT_USERNAME);
@@ -182,32 +179,33 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
     /**
      * 互斥锁解决缓存击穿
+     *
      * @param id
      * @return
      */
-    public Blog queryWithMutex(Integer id){
+    public Blog queryWithMutex(Integer id) {
         //        使用redis缓存做查询
-        String key = RedisConstants.CACHE_BLOG_KEY+id;
+        String key = RedisConstants.CACHE_BLOG_KEY + id;
 //        1、从redis中查询博客缓存
         String blogJson = stringRedisTemplate.opsForValue().get(key);
-        Blog blog ;
+        Blog blog;
 //        2、判断是否存在
         if (StrUtil.isNotBlank(blogJson)) {
             //        3、如果命中 则返回
-            blog = JSONUtil.toBean(blogJson,Blog.class);
-            log.info("在缓存中查询到博客++++++++++++++++++++："+blog.getId());
-        }else {
+            blog = JSONUtil.toBean(blogJson, Blog.class);
+            log.info("在缓存中查询到博客++++++++++++++++++++：" + blog.getId());
+        } else {
 //            判断是不是空数据 解决缓存穿透问题
-            if(blogJson != null){
+            if (blogJson != null) {
                 throw new CustomException(ResultCodeEnum.BLOG_NOT_EXIST_ERROR);
             }
-        //  实现缓存重建
+            //  实现缓存重建
 //            获取互斥锁
             String lockKey = RedisConstants.LOCK_BLOG_KEY + id;
-            try{
+            try {
                 boolean isLock = tryLock(lockKey);
 //            判断是否成功
-                if(!isLock){
+                if (!isLock) {
 //            失败则休眠并重试
                     Thread.sleep(50);
 //                    queryWithMutex(id);
@@ -215,17 +213,17 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 //        4、未命中， 去查询数据库
                 blog = blogMapper.selectById(id);
 //        5、数据库不存在 返回错误
-                if(blog == null){
+                if (blog == null) {
 //                如果为空 就缓存空数据
-                    stringRedisTemplate.opsForValue().set(key,"",RedisConstants.CACHE_NULL_TTL,TimeUnit.MINUTES);
+                    stringRedisTemplate.opsForValue().set(key, "", RedisConstants.CACHE_NULL_TTL, TimeUnit.MINUTES);
                     throw new CustomException(ResultCodeEnum.BLOG_NOT_EXIST_ERROR);
                 }
 //        6、数据库存在 写缓存 并返回
-                stringRedisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(blog), RedisConstants.CACHE_BLOG_TTL,TimeUnit.MINUTES);
-                log.info("在shujuku中查询到博客++++++++++++++++++++："+blog.getId());
-            }catch(InterruptedException e){
+                stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(blog), RedisConstants.CACHE_BLOG_TTL, TimeUnit.MINUTES);
+                log.info("在shujuku中查询到博客++++++++++++++++++++：" + blog.getId());
+            } catch (InterruptedException e) {
                 throw new RuntimeException(e);
-            }finally {
+            } finally {
 //            释放互斥锁
                 unLock(lockKey);
             }
@@ -237,47 +235,49 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
     /**
      * 缓存穿透
+     *
      * @param id
      * @return
      */
-    public Blog queryWithPassThrough(Integer id){
+    public Blog queryWithPassThrough(Integer id) {
         //        使用redis缓存做查询
-        String key = RedisConstants.CACHE_BLOG_KEY+id;
+        String key = RedisConstants.CACHE_BLOG_KEY + id;
 //        1、从redis中查询博客缓存
         String blogJson = stringRedisTemplate.opsForValue().get(key);
-        Blog blog ;
+        Blog blog;
 //        2、判断是否存在
         if (StrUtil.isNotBlank(blogJson)) {
             //        3、如果命中 则返回
-            blog = JSONUtil.toBean(blogJson,Blog.class);
-            log.info("在缓存中查询到博客++++++++++++++++++++："+blog.getId());
-        }else {
+            blog = JSONUtil.toBean(blogJson, Blog.class);
+            log.info("在缓存中查询到博客++++++++++++++++++++：" + blog.getId());
+        } else {
 //            判断是不是空数据 解决缓存穿透问题
-            if(blogJson != null){
+            if (blogJson != null) {
                 throw new CustomException(ResultCodeEnum.BLOG_NOT_EXIST_ERROR);
             }
 
 //        4、未命中， 去查询数据库
             blog = blogMapper.selectById(id);
 //        5、数据库不存在 返回错误
-            if(blog == null){
+            if (blog == null) {
 //                如果为空 就缓存空数据
-                stringRedisTemplate.opsForValue().set(key,"",RedisConstants.CACHE_NULL_TTL,TimeUnit.MINUTES);
+                stringRedisTemplate.opsForValue().set(key, "", RedisConstants.CACHE_NULL_TTL, TimeUnit.MINUTES);
                 throw new CustomException(ResultCodeEnum.BLOG_NOT_EXIST_ERROR);
             }
 //        6、数据库存在 写缓存 并返回
-            stringRedisTemplate.opsForValue().set(key,JSONUtil.toJsonStr(blog), RedisConstants.CACHE_BLOG_TTL,TimeUnit.MINUTES);
-            log.info("在shujuku中查询到博客++++++++++++++++++++："+blog.getId());
+            stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(blog), RedisConstants.CACHE_BLOG_TTL, TimeUnit.MINUTES);
+            log.info("在shujuku中查询到博客++++++++++++++++++++：" + blog.getId());
         }
         return blog;
     }
 
     /**
      * 尝试获取锁
+     *
      * @param key
      * @return
      */
-    private boolean tryLock(String key){
+    private boolean tryLock(String key) {
         Boolean aBoolean = stringRedisTemplate.opsForValue().setIfAbsent(key, "1", 10, TimeUnit.SECONDS);
         return BooleanUtil.isTrue(aBoolean);
 
@@ -285,9 +285,10 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
     /**
      * 释放锁
+     *
      * @param key
      */
-    private void unLock(String key){
+    private void unLock(String key) {
         stringRedisTemplate.delete(key);
     }
 
@@ -345,13 +346,14 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
     /**
      * 查询用户发布的博客
+     *
      * @param id
      * @return
      */
     @Override
     public List<Blog> getByUserId(Integer id) {
         QueryWrapper<Blog> wrapper = new QueryWrapper<>();
-        wrapper.eq("user_id",id);
+        wrapper.eq("user_id", id);
         return blogMapper.selectList(wrapper);
     }
 
@@ -411,7 +413,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         List<Blog> list = blogMapper.selectComment(blog);
         PageInfo<Blog> pageInfo = PageInfo.of(list);
         List<Blog> blogList = pageInfo.getList();
-        for (Blog b : blogList){
+        for (Blog b : blogList) {
             int likesCount = likesService.selectByFidAndModule(b.getId(), LikesModuleEnum.BLOG.getValue());
             b.setLikesCount(likesCount);
         }

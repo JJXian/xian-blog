@@ -6,6 +6,8 @@ import java.lang.annotation.*;
 
 /**
  * 接口限流注解
+ *
+ * @author jjxian
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
