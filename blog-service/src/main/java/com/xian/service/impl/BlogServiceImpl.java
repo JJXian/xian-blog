@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.hash.BloomFilter;
+import com.google.common.hash.Funnels;
 import com.xian.common.constants.RedisConstants;
 import com.xian.common.constants.commonConstants;
 import com.xian.common.enums.LikesModuleEnum;
@@ -76,6 +78,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
             blog.setUserId(currentUser.getId());
         }
         blogMapper.insert(blog);
+//        更新布隆过滤器 （开启布隆过滤器解决缓存穿透时使用）
+//        addBlogToBloomFilter(blog.getId());
     }
 
     /**
@@ -114,6 +118,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         }
 //        1、更新数据库
         blogMapper.updateById(blog);
+//        更新布隆过滤器 （开启布隆过滤器解决缓存穿透时使用）
+//        addBlogToBloomFilter(blog.getId());
+        
 //        2、 删除缓存
         stringRedisTemplate.delete(RedisConstants.CACHE_BLOG_KEY + id);
         return true;
@@ -208,6 +215,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
                 if (!isLock) {
 //            失败则休眠并重试
                     Thread.sleep(50);
+//                    测试用
 //                    queryWithMutex(id);
                 }
 //        4、未命中， 去查询数据库
@@ -233,8 +241,64 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     }
 
 
+    // 初始化布隆过滤器
+    int expectedInsertions = 1000;  // 预期插入的元素数量
+    double falsePositiveProbability = 0.01;  // 允许的假阳性概率
+    BloomFilter<Integer> bloomFilter = BloomFilter.create(Funnels.integerFunnel(), expectedInsertions, falsePositiveProbability);
+
     /**
-     * 缓存穿透
+     * 布隆过滤器解决缓存穿透
+     *
+     * @param id
+     * @return
+     */
+    public Blog queryWithPassThrough2(Integer id) {
+        // 使用redis缓存做查询
+        String key = RedisConstants.CACHE_BLOG_KEY + id;
+        Blog blog;
+
+        // 1. 使用布隆过滤器检查博客ID是否可能存在
+        if (!bloomFilter.mightContain(id)) {
+            throw new CustomException(ResultCodeEnum.BLOG_NOT_EXIST_ERROR);
+        }
+
+        // 2. 从redis中查询博客缓存
+        String blogJson = stringRedisTemplate.opsForValue().get(key);
+
+        // 3. 判断缓存是否命中
+        if (StrUtil.isNotBlank(blogJson)) {
+            // 如果命中，返回缓存中的数据
+            blog = JSONUtil.toBean(blogJson, Blog.class);
+            log.info("在缓存中查询到博客++++++++++++++++++++：" + blog.getId());
+        } else {
+            // 如果缓存未命中，查询数据库
+            blog = blogMapper.selectById(id);
+
+            // 4. 数据库查询结果处理
+            if (blog == null) {
+                // 如果数据库中也不存在，缓存空数据
+                stringRedisTemplate.opsForValue().set(key, "", RedisConstants.CACHE_NULL_TTL, TimeUnit.MINUTES);
+                throw new CustomException(ResultCodeEnum.BLOG_NOT_EXIST_ERROR);
+            }
+
+            // 5. 数据库中存在，写入缓存并返回
+            stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(blog), RedisConstants.CACHE_BLOG_TTL, TimeUnit.MINUTES);
+            log.info("在shujuku中查询到博客++++++++++++++++++++：" + blog.getId());
+        }
+        return blog;
+    }
+
+    /**
+     * 新增和更新时 同步添加布隆过滤器
+     *
+     * @param blogId
+     */
+    public void addBlogToBloomFilter(Integer blogId) {
+        bloomFilter.put(blogId);
+    }
+
+    /**
+     * 缓存空值解决缓存穿透
      *
      * @param id
      * @return

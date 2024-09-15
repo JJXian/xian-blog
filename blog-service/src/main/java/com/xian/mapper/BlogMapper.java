@@ -50,4 +50,5 @@ public interface BlogMapper extends BaseMapper<Blog> {
     List<Blog> selectCollect(Blog blog);
 
     List<Blog> selectComment(Blog blog);
+
 }
