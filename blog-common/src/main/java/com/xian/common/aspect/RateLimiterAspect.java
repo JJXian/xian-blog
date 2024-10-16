@@ -72,4 +72,41 @@ public class RateLimiterAspect {
         stringBuffer.append(targetClass.getName()).append("-").append(method.getName());
         return stringBuffer.toString();
     }
+
+    /**
+     * 基于滑动窗口的限流
+     */
+    // 核心限流方法，判断请求是否允许
+    /*
+    public boolean isAllowed(String userId) {
+        String key = "rate_limit:" + userId;
+
+        // 当前时间戳（秒）
+        long currentTime = Instant.now().getEpochSecond();
+        long windowStart = currentTime - windowSize;
+
+        // Redis ZSet操作
+        ZSetOperations<String, String> zSetOps = redisTemplate.opsForZSet();
+
+        // Step 1: 清理时间窗口之外的请求记录
+        zSetOps.removeRangeByScore(key, 0, windowStart);
+
+        // Step 2: 获取当前窗口内的请求数量
+        Long requestCount = zSetOps.zCard(key);
+
+        if (requestCount != null && requestCount < maxRequests) {
+            // Step 3: 如果没有超过限制，则记录当前请求，并允许通过
+            zSetOps.add(key, String.valueOf(currentTime), currentTime);
+
+            // Step 4: 设置键的过期时间，略大于窗口期，比如窗口期 + 1 秒
+            redisTemplate.expire(key, windowSize + 1, TimeUnit.SECONDS);
+
+            return true;
+        } else {
+            // 超过限流，拒绝请求
+            return false;
+        }
+    }
+
+     */
 }
