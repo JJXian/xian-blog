@@ -35,7 +35,7 @@ public class RateLimiterAspect {
 
     @Autowired
     private RedisScript<Long> limitScript;
-
+    
     @Before("@annotation(rateLimiter)")
     public void doBefore(JoinPoint point, RateLimiter rateLimiter) throws Throwable {
         String key = rateLimiter.key();
