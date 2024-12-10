@@ -32,7 +32,7 @@
         <mybatis.version>2.2.1</mybatis.version>
         <pagehelper.version>1.4.6</pagehelper.version>
         <jwt.version>4.3.0</jwt.version>
-        <hutool.version>5.8.18</hutool.version>
+        <hutool.version>5.8.21</hutool.version>
         <mybatisPlus.version>3.5.3.1</mybatisPlus.version>
         <fastjson.version>1.2.58</fastjson.version>
         <fastjson.dataformat.version>2.9.9</fastjson.dataformat.version>
